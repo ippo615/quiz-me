@@ -220,9 +220,9 @@ var periodicTableQuestion = (function(){
 	}
 
 	var makeNumericPropertyQuestion = function(property,sortBy,question){
-		return function(quiz,options){
-			var minAtomicIndex = parseInt(('minatomicindex' in options) ? options.minatomicindex : '1') - 1;
-			var maxAtomicIndex = parseInt(('maxatomicindex' in options) ? options.maxatomicindex : '118') - 1;
+		return function(quiz){
+			var minAtomicIndex = parseInt(quiz.getOption('minAtomicIndex','1'),10) - 1;
+			var maxAtomicIndex = parseInt(quiz.getOption('maxAtomicIndex','118'),10) - 1;
 
 			var subsetElements = elements.slice(minAtomicIndex,maxAtomicIndex);
 
@@ -254,9 +254,9 @@ var periodicTableQuestion = (function(){
 	};
 
 	function makePropertyQuestion(property,question){
-		return function( quiz, options ){
-			var minAtomicIndex = parseInt(('minatomicindex' in options) ? options.minatomicindex : '1') - 1;
-			var maxAtomicIndex = parseInt(('maxatomicindex' in options) ? options.maxatomicindex : '118') - 1;
+		return function( quiz ){
+			var minAtomicIndex = parseInt(quiz.getOption('minAtomicIndex','1'),10) - 1;
+			var maxAtomicIndex = parseInt(quiz.getOption('maxAtomicIndex','118'),10) - 1;
 
 			var subsetElements = elements.slice(minAtomicIndex,maxAtomicIndex);
 
@@ -284,9 +284,9 @@ var periodicTableQuestion = (function(){
 		};
 	}
 
-	var nameQuestion = function( quiz, options ){
-		var minAtomicIndex = parseInt(('minatomicindex' in options) ? options.minatomicindex : '1') - 1;
-		var maxAtomicIndex = parseInt(('maxatomicindex' in options) ? options.maxatomicindex : '118') - 1;
+	var nameQuestion = function( quiz ){
+			var minAtomicIndex = parseInt(quiz.getOption('minAtomicIndex','1'),10) - 1;
+			var maxAtomicIndex = parseInt(quiz.getOption('maxAtomicIndex','118'),10) - 1;
 
 		var subsetElements = elements.slice(minAtomicIndex,maxAtomicIndex);
 
@@ -343,9 +343,9 @@ var periodicTableQuestion = (function(){
 	var character = makePropertyQuestion('character','Is a {{property}}.');
 
 	function combineQuestions(questions){
-		return function(quiz,options){
+		return function(quiz){
 			var question = chooseRandom(questions,1)[0];
-			question(quiz,options);
+			question(quiz);
 		};
 	}
 
