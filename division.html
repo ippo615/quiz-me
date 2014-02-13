@@ -48,9 +48,7 @@ var formatToInteger = function (x) {
 
 onload = function(){
 	myQuiz = new Quiz({
-		makeQuestion: function(quiz,options){
-			mathQuestions.division(quiz,options);
-		},
+		makeQuestion: mathQuestions.division,
 		options: getUrlParms()
 	});
 	myQuiz.resize();

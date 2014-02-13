@@ -13,21 +13,14 @@ var mathQuestions = (function(){
 		return things;
 	}
 
-	function getOption(options, name, value) {
-		if (options.hasOwnProperty(name)) {
-		    return options[name];
-		}
-		return value;
-	}
-
 	var formatToInteger = function (x) {
     	return x.toFixed(0);
 	};
 
-	function additionQuestion(quiz,options) {
-		var formatNumber = getOption(options,'formatNumber',formatToInteger);
-		var opMin = parseInt(getOption(options,'additionMin','0'),10);
-		var opMax = parseInt(getOption(options,'additionMax','9999'),10);
+	function additionQuestion(quiz) {
+		var formatNumber = quiz.getOption('formatNumber',formatToInteger);
+		var opMin = parseInt(quiz.getOption('additionMin','0'),10);
+		var opMax = parseInt(quiz.getOption('additionMax','9999'),10);
 		var op1 = opMin + Math.random()*(opMax-opMin);
 		var op2 = opMin + Math.random()*(opMax-opMin);
 		var answer = parseFloat(formatNumber(op1))+parseFloat(formatNumber(op2));
@@ -48,10 +41,10 @@ var mathQuestions = (function(){
 		quiz.questionPrompt( 'Sum?' );
 	}
 
-	function subtractionQuestion(quiz,options) {
-		var formatNumber = getOption(options,'formatNumber',formatToInteger);
-		var opMin = parseInt(getOption(options,'subtractionMin','0'),10);
-		var opMax = parseInt(getOption(options,'subtractionMax','9999'),10);
+	function subtractionQuestion(quiz) {
+		var formatNumber = quiz.getOption('formatNumber',formatToInteger);
+		var opMin = parseInt(quiz.getOption('subtractionMin','0'),10);
+		var opMax = parseInt(quiz.getOption('subtractionMax','9999'),10);
 		var op1 = opMin + Math.random()*(opMax-opMin);
 		var op2 = opMin + Math.random()*(opMax-opMin);
 		op1 = op1+op2;
@@ -73,10 +66,10 @@ var mathQuestions = (function(){
 		quiz.questionPrompt( 'Difference?' );
 	}
 
-	function multiplicationQuestion(quiz,options) {
-		var formatNumber = getOption(options,'formatNumber',formatToInteger);
-		var opMin = parseInt(getOption(options,'multiplicationMin','0'),10);
-		var opMax = parseInt(getOption(options,'multiplicationMax','15'),10);
+	function multiplicationQuestion(quiz) {
+		var formatNumber = quiz.getOption('formatNumber',formatToInteger);
+		var opMin = parseInt(quiz.getOption('multiplicationMin','0'),10);
+		var opMax = parseInt(quiz.getOption('multiplicationMax','15'),10);
 		var op1 = opMin + Math.random()*(opMax-opMin);
 		var op2 = opMin + Math.random()*(opMax-opMin);
 		var answer = parseFloat(formatNumber(op1))*parseFloat(formatNumber(op2));
@@ -97,10 +90,10 @@ var mathQuestions = (function(){
 		quiz.questionPrompt( 'Product?' );
 	}
 
-	function divisionQuestion(quiz,options) {
-		var formatNumber = getOption(options,'formatNumber',formatToInteger);
-		var opMin = parseInt(getOption(options,'divisionMin','1'),10);
-		var opMax = parseInt(getOption(options,'divisionMax','15'),10);
+	function divisionQuestion(quiz) {
+		var formatNumber = quiz.getOption('formatNumber',formatToInteger);
+		var opMin = parseInt(quiz.getOption('divisionMin','1'),10);
+		var opMax = parseInt(quiz.getOption('divisionMax','15'),10);
 		var op1 = opMin + Math.random()*(opMax-opMin);
 		var op2 = opMin + Math.random()*(opMax-opMin);
 		var prod = parseFloat(formatNumber(op1))*parseFloat(formatNumber(op2));
@@ -123,16 +116,16 @@ var mathQuestions = (function(){
 		quiz.questionPrompt( 'Quotient?' );
 	}
 
-	function anyQuestion(quiz,options){
+	function anyQuestion(quiz){
 		var rn = Math.random();
 		if( rn < 0.25 ){
-			divisionQuestion(quiz,options);
+			divisionQuestion(quiz);
 		}else if( rn < 0.50 ){
-			multiplicationQuestion(quiz,options);
+			multiplicationQuestion(quiz);
 		}else if( rn < 0.75 ){
-			subtractionQuestion(quiz,options);
+			subtractionQuestion(quiz);
 		}else{
-			additionQuestion(quiz,options);
+			additionQuestion(quiz);
 		}
 	}
 
