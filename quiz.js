@@ -364,6 +364,17 @@ var Quiz = (function(){
 		return answerOnClick( this.nodeChoices[index-1] );
 	};
 
+	Quiz.prototype.getOption = function(name,value){
+    	if( this.options.hasOwnProperty(name) ){
+        	return this.options[name];
+        }
+        var lowerName = name.toLowerCase();
+        if( this.options.hasOwnProperty(lowerName) ){
+        	return this.options[lowerName];
+        }
+        return value;
+	};
+
 	function quizAsk(quiz){
 		setTimeout(function () {
 			quiz.choiceHide(1);
@@ -380,7 +391,7 @@ var Quiz = (function(){
 		setTimeout(function () {
 			quiz.genericCanvas.getContext('2d').clearRect(0,0,quiz.genericCanvas.width,quiz.genericCanvas.height);
 			quiz.overlay.clear();
-			quiz.makeQuestion(quiz,quiz.options);
+			quiz.makeQuestion(quiz);
 		}, 1200);
 		setTimeout(function () {
 			quiz.choiceShow(4);

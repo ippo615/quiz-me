@@ -93,7 +93,7 @@ var presidentialQuestion = (function(){
 		return results;
 	}
 
-	var nthPresident = function(quiz,options){
+	var nthPresident = function(quiz){
 
 		var choices = chooseRandom( presidents, 4 );
 		var correctIndex = Math.floor( Math.random()*4 );

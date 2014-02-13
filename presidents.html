@@ -48,8 +48,8 @@ var formatToInteger = function (x) {
 
 onload = function(){
 	myQuiz = new Quiz({
-		makeQuestion: function(quiz,options){
-			presidentialQuestion(quiz,options);
+		makeQuestion: function(quiz){
+			presidentialQuestion(quiz);
 		},
 		options: getUrlParms()
 	});
