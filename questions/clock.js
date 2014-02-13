@@ -2,12 +2,12 @@ var clockQuestion = (function(){
     // draws the face of the clock without the hands
 	// need to add parameter for passing in a canvas 2d context
 	// perhaps color as well
-	function drawClockFace(x,y,r,options){
-		var ctx = ('clockContext' in options)?options.clockContext:null;
-        var clockFaceColor = ('clockFaceColor' in options)?options.clockFaceColor:'white';
-        var clockOutlineColor = ('clockOutlineColor' in options)?options.clockOutlineColor:'#0000AA';
-        var clockHourTickColor = ('clockHourTickColor' in options)?options.clockHourTickColor:'black';
-        var clockMinuteTickColor = ('clockMinuteTickColor' in options)?options.clockMinuteTickColor:'black';
+	function drawClockFace(x,y,r,quiz){
+		var ctx = quiz.getOption('clockContext',null);
+        var clockFaceColor = quiz.getOption('clockFaceColor','white');
+        var clockOutlineColor = quiz.getOption('clockOutlineColor','#0000AA');
+        var clockHourTickColor = quiz.getOption('clockHourTickColor','black');
+        var clockMinuteTickColor = quiz.getOption('clockMinuteTickColor','black');
 		ctx.save();
 			ctx.clearRect(x-r,y-r,r+r,r+r);
 			ctx.translate(x,y);
@@ -53,10 +53,10 @@ var clockQuestion = (function(){
 		ctx.restore();
 	}
 	// draw the hour and minutes hands for a particular time
-	function drawClockHands(h,m,x,y,r,options){
-		var ctx = ('clockContext' in options)?options.clockContext:null;
-        var clockHourHandColor = ('clockHourHandColor' in options)?options.clockHourHandColor:'black';
-        var clockMinuteHandColor = ('clockMinuteHandColor' in options)?options.clockMinuteHandColor:'black';
+	function drawClockHands(h,m,x,y,r,quiz){
+		var ctx = quiz.getOption('clockContext',null);
+        var clockHourHandColor = quiz.getOption('clockHourHandColor','black');
+        var clockMinuteHandColor = quiz.getOption('clockMinuteHandColor','black');
 		ctx.save();
 			ctx.translate(x,y);
 			ctx.scale(r,r);
@@ -84,14 +84,13 @@ var clockQuestion = (function(){
 		ctx.restore();
 	}
 	//draw the face and hands in one call
-	function drawTime(x,y,r,h,m,options){
-		drawClockFace(x,y,r,options);
-		drawClockHands(h,m,x,y,r,options);
+	function drawTime(x,y,r,h,m,quiz){
+		drawClockFace(x,y,r,quiz);
+		drawClockHands(h,m,x,y,r,quiz);
 	}
-    function drawTimeIndex(options){
-    	var index = ('timeIndex' in options)?options.timeIndex:(Math.random()*12*60);
-        var isContinuous = ('clockIsContinuous' in options)?options.clockIsContinuous:true;
-		var quiz = ('quiz' in options)?options.quiz:{globalScale:1.0};
+    function drawTimeIndex(index,quiz){
+    	//var index = quiz.getOption('timeIndex', Math.random()*12*60);
+        var isContinuous = quiz.getOption('clockIsContinuous',true);
 		var scale = quiz.globalScale;
         var hour = (index / 60);
         if( ! isContinuous ){
@@ -99,7 +98,7 @@ var clockQuestion = (function(){
         }
         var minute = index % 60;
 		//console.info(hour+':'+minute);
-        drawTime( 120*scale, 120*scale, 100*scale, hour, minute, options );
+        drawTime( 120*scale, 120*scale, 100*scale, hour, minute, quiz );
     }
 	/*
     drawTimeIndex({
@@ -120,7 +119,8 @@ var clockQuestion = (function(){
 		var startTime = 0;
 		var duration = 0;
 		var onDoneAction = null;
-		var animationOptions = {};
+		var timeIndex = 0;
+
 		var requestAnimFrame = window.requestAnimationFrame ||
 		    window.webkitRequestAnimationFrame ||
 		    window.mozRequestAnimationFrame ||
@@ -139,25 +139,20 @@ var clockQuestion = (function(){
 		    var percent = 0.5 - (Math.cos(dt / duration * (Math.PI)) / 2);
 
 		    if (dt < duration) {
-				animationOptions.timeIndex = timeStart + (timeEnd - timeStart)*percent;
-		        drawTimeIndex(animationOptions);
+				timeIndex = timeStart + (timeEnd - timeStart)*percent;
+		        drawTimeIndex(timeIndex,savedQuiz);
 		        requestAnimFrame(runAmin);
 		    } else {
-				animationOptions.timeIndex = timeEnd;
-		        drawTimeIndex(animationOptions);
+				timeIndex = timeEnd;
+		        drawTimeIndex(timeIndex,savedQuiz);
 		        if (onDoneAction) {
 		            onDoneAction();
 		        }
 		    }
 		};
 
-		return function (start, end, ms, options, onDone) {
+		return function (start, end, ms, quiz, onDone) {
 		    requestAnimFrame(runAmin);
-			var prop;
-			animationOptions = {};
-			for( prop in options ){
-				animationOptions[prop] = options[prop];
-			}
 		    timeStart = start;
 		    timeEnd = end;
 		    duration = ms;
@@ -171,10 +166,9 @@ var clockQuestion = (function(){
 		animateTimeTransition(time,newTime,ms,options,onDone);
 		time = newTime;
 	};
-	var savedOptions = {};
+	var savedQuiz = {};
 	function redraw(){
-		savedOptions.timeIndex = time;
-		drawTimeIndex(savedOptions);
+		drawTimeIndex(time,savedQuiz);
 	}
 
 	function newRandomTime(){
@@ -199,16 +193,13 @@ var clockQuestion = (function(){
 		if( minute < 10 ){ minute = '0'+minute; }
 		return hour+':'+minute;
 	}
-	function clockQuestion(quiz,options){
-		options.clockContext = quiz.genericCanvas.getContext('2d');
-		options.quiz = quiz;
+	function clockQuestion(quiz){
+		quiz.options.clockContext = quiz.genericCanvas.getContext('2d');
 
-		savedOptions = {};
-		var opt;
-		for( opt in options ){ savedOptions[opt] = options[opt]; }
+		savedQuiz = quiz;
 
-		var minAnswerDeviation = parseFloat( ('minAnswerDeviation' in options) ? options.minAnswerDeviation : '0.01');
-		var maxAnswerDeviation = parseFloat( ('maxAnswerDeviation' in options) ? options.maxAnswerDeviation : '0.10');
+		var minAnswerDeviation = parseFloat( quiz.getOption('minAnswerDeviation','0.01') );
+		var maxAnswerDeviation = parseFloat( quiz.getOption('maxAnswerDeviation','0.10') );
 		var answerDeviationRange = (maxAnswerDeviation - minAnswerDeviation)
 		var newTime = Math.round(Math.random()*12*60);
 		var answers = [
@@ -227,7 +218,7 @@ var clockQuestion = (function(){
 		quiz.questionNumbers( '','' );
 		quiz.questionPrompt( 'Time?' );
 
-		animateToNewTime(newTime,5000,options,quiz.doNothing);
+		animateToNewTime(newTime,5000,quiz,quiz.doNothing);
 	}
 
 	return clockQuestion;
