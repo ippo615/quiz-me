@@ -34,13 +34,12 @@ var perimeterQuestion = (function(){
 		}
 	}
 
-	function drawThing(canvas, points, options) {
-
-		var quiz = ('quiz' in options)? options.quiz : {globalScale:1.0};
+	function drawThing(points, quiz) {
 
 		var fontSize = 16;
 		var maxLabelWidth = fontSize * 5;
 
+		var canvas = quiz.genericCanvas;
 		var context = canvas.getContext('2d');
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.save();
@@ -118,14 +117,14 @@ var perimeterQuestion = (function(){
 		            polygon[i].x = polyStart[i].x + (polyEnd[i].x - polyStart[i].x) * percent;
 		            polygon[i].y = polyStart[i].y + (polyEnd[i].y - polyStart[i].y) * percent;
 		        }
-		        drawThing(savedOptions.quiz.genericCanvas, polygon, savedOptions);
+		        drawThing(polygon, savedQuiz);
 		        requestAnimFrame(runAmin);
 		    } else {
 		        for (i = 0; i < nPoints; i += 1) {
 		            polygon[i].x = polyEnd[i].x;
 		            polygon[i].y = polyEnd[i].y;
 		        }
-		        drawThing(savedOptions.quiz.genericCanvas, polygon, savedOptions);
+		        drawThing(polygon, savedQuiz);
 		        if (onDoneAction) {
 		            onDoneAction();
 		        }
@@ -206,11 +205,11 @@ var perimeterQuestion = (function(){
 		return poly;
 	}
 
-	function rectangle(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function rectangle(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var xSize = xMin + Math.random() * xRange;
@@ -230,11 +229,11 @@ var perimeterQuestion = (function(){
 		}];
 	}
 
-	function parallelogram(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function parallelogram(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var xOffset = Math.random() * xRange;
@@ -255,11 +254,11 @@ var perimeterQuestion = (function(){
 		}];
 	}
 
-	function square(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function square(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var sizeMin = 0.5 * (xMin + yMin);
@@ -280,11 +279,11 @@ var perimeterQuestion = (function(){
 		}];
 	}
 
-	function trapazoid(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function trapazoid(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var base1 = xMin + Math.random() * xRange;
@@ -306,11 +305,11 @@ var perimeterQuestion = (function(){
 		}];
 	}
 
-	function triangleDown(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function triangleDown(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var base1 = xMin + Math.random() * xRange;
@@ -332,11 +331,11 @@ var perimeterQuestion = (function(){
 		}];
 	}
 
-	function triangleUp(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function triangleUp(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var base1 = 0;
@@ -358,13 +357,13 @@ var perimeterQuestion = (function(){
 		}];
 	}
 
-	function makeRegularPolygon(options) {
-		var radius = getOption(options, 'radius', 50);
-		var sides = getOption(options, 'sides', 5);
-		var angle = getOption(options, 'angle', 0);
+	function makeRegularPolygon(radius,sides,angle,quiz) {
+		//var radius = quiz.getOption('radius', 50);
+		//var sides = quiz.getOption('sides', 5);
+		//var angle = quiz.getOption('angle', 0);
 		var radOffset = angle * Math.PI / 180;
-		var x = getOption(options, 'x', 50);
-		var y = getOption(options, 'y', 50);
+		var x = quiz.getOption('x', 50);
+		var y = quiz.getOption('y', 50);
 		var i, poly = [];
 		for (i = 0; i < sides; i += 1) {
 		    poly.push({
@@ -375,22 +374,26 @@ var perimeterQuestion = (function(){
 		return poly;
 	}
 
-	function regularPolygon(options) {
-		var xMin = getOption(options, 'xMin', 50);
-		var xMax = getOption(options, 'xMax', 100);
-		var yMin = getOption(options, 'yMin', 50);
-		var yMax = getOption(options, 'yMax', 100);
+	function regularPolygon(quiz) {
+		var xMin = quiz.getOption('perimeterMinX', 50);
+		var xMax = quiz.getOption('perimeterMaxX', 100);
+		var yMin = quiz.getOption('perimeterMinY', 50);
+		var yMax = quiz.getOption('perimeterMaxY', 100);
 		var xRange = Math.abs(xMax - xMin);
 		var yRange = Math.abs(yMax - yMin);
 		var sides = 3 + Math.floor(Math.random() * 10);
-		return makeRegularPolygon({
-		    angle: Math.random() * 360,
-		    sides: sides,
-		    radius: ((xMin + yMin) + Math.random() * (xRange + yRange)) * 0.5
-		});
+		//quiz.options.sides = sides;
+		//quiz.options.angle = Math.random() * 360;
+		//quiz.options.radius = ((xMin + yMin) + Math.random() * (xRange + yRange)) * 0.5;
+		return makeRegularPolygon(
+			((xMin + yMin) + Math.random() * (xRange + yRange)) * 0.5,
+			sides,
+			Math.random() * 360,
+			quiz
+		);
 	}
 
-	function getRandomShape(options) {
+	function getRandomShape(quiz) {
 		var shapes = [
 		    square,
 		    rectangle,
@@ -400,12 +403,12 @@ var perimeterQuestion = (function(){
 		    triangleUp,
 		    regularPolygon
 		];
-		var sides = getOption(options, 'sides', 20);
-		var xCenter = getOption(options, 'x', 120);
-		var yCenter = getOption(options, 'y', 100);
+		var sides = quiz.getOption('sides', 20);
+		var xCenter = quiz.getOption('x', 120);
+		var yCenter = quiz.getOption('y', 100);
 		var shapeIndex = Math.floor(Math.random() * shapes.length);
 		var shape = shapes[shapeIndex];
-		var poly = shape(options);
+		var poly = shape(quiz);
 		poly = centerShape(poly, xCenter, yCenter);
 		poly = addPoints(poly, sides);
 		return poly;
@@ -431,8 +434,8 @@ var perimeterQuestion = (function(){
 		return Math.sqrt(dx * dx + dy * dy);
 	}
 
-	function computePerimeter(pts, options) {
-		var formatNumber = getOption(options, 'formatNumber', formatToInteger);
+	function computePerimeter(pts, quiz) {
+		var formatNumber = quiz.getOption('formatNumber', formatToInteger);
 		var total = 0;
 		var i, l = pts.length;
 		for (i = 1; i < l; i += 1) {
@@ -449,29 +452,32 @@ var perimeterQuestion = (function(){
 		}
 		return total;
 	}
-	var polygon = makeRegularPolygon({
-		sides: 20
-	});
+
+	var polygon = [];
+	var i, maxSides = 20;
+	for( i=0; i<maxSides; i+=1 ){
+		polygon.push({
+		    x: 0,
+		    y: 0
+		});
+	}
+
 	var globalScale = 1;
 	function animateToNewPoly(newPoly, duration, onDone) {
 		animatePolygonTransition(polygon, newPoly, duration, onDone);
 	}
 
 	function redraw(){
-		drawThing( savedOptions.quiz.genericCanvas, polygon, savedOptions);
+		drawThing(polygon, savedQuiz);
 	}
 
-	var savedOptions = {}
-	function perimeterQuestion(quiz,options) {
-		var opt;
-		for( opt in options ){
-			savedOptions[opt] = options[opt];
-		}
-		savedOptions.quiz = quiz;
+	var savedQuiz = {};
+	function perimeterQuestion(quiz) {
+		savedQuiz = quiz;
 
-		var formatNumber = getOption(options, 'formatNumber', formatToInteger);
-		var poly = getRandomShape(options);
-		var answer = computePerimeter(poly, options);
+		var formatNumber = quiz.getOption('formatNumber', formatToInteger);
+		var poly = getRandomShape(quiz);
+		var answer = computePerimeter(poly, quiz);
 		var answers = [
 		    formatNumber(answer),
 		    formatNumber(answer * 1.01+1),
