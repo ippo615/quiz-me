@@ -1,16 +1,18 @@
 var fractionQuestion = (function(){
 
 	var saved = {
-		denominator: 1,
-		numerator1: 1,
-		numerator2: 1,
+		d1: 1,
+		d2: 1,
+		n1: 1,
+		n2: 1,
 		quiz: null
 	};
 
 	function redrawPair(){
-		var d = saved.denominator;
-		var n1 = saved.numerator1;
-		var n2 = saved.numerator2;
+		var d1 = saved.d1;
+		var d2 = saved.d2;
+		var n1 = saved.n1;
+		var n2 = saved.n2;
 		var quiz = saved.quiz;
 
 		var r = 40;
@@ -19,19 +21,17 @@ var fractionQuestion = (function(){
 		var y1 = 160*quiz.globalScale;
 		var x2 = (160+r+padding)*quiz.globalScale;
 		var y2 = 160*quiz.globalScale;
-		drawFraction(x1,y1,r*quiz.globalScale,n1,d,quiz);
-        drawFraction(x2,y2,r*quiz.globalScale,n2,d,quiz);
+		drawFraction(x1,y1,r*quiz.globalScale,n1,d1,quiz);
+        drawFraction(x2,y2,r*quiz.globalScale,n2,d2,quiz);
 	}
 	function redrawSingle(){
-		var d = saved.denominator;
-		var n1 = saved.numerator1;
+		var d = saved.d1;
+		var n1 = saved.n1;
 		var quiz = saved.quiz;
 		drawFraction(110*quiz.globalScale,100*quiz.globalScale,60*quiz.globalScale,n1,d,quiz);
 	}
 
 	function simplePic(quiz){
-    	var canvas = quiz.genericCanvas;
-        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
         
         var maxDenominator = parseInt( quiz.getOption('fractionMaxDenominator','12' ), 10 );
         var minDenominator = parseInt( quiz.getOption('fractionMinDenominator','1' ), 10 );
@@ -63,17 +63,17 @@ var fractionQuestion = (function(){
 		quiz.questionPrompt( 'Value?' );
 
 		// Save the parameters for redrawing durring a resize
-		saved.denominator = d;
-		saved.numerator1 = n1;
+		saved.d1 = d;
+		saved.n1 = n1;
 		saved.quiz = quiz;
-		quiz.onResize = redrawSingle;
 
+    	var canvas = quiz.genericCanvas;
+        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+		quiz.onResize = redrawSingle;
 		redrawSingle();
     }
 
 	function simpleAdd(quiz){
-    	var canvas = quiz.genericCanvas;
-        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
         
         var maxDenominator = parseInt( quiz.getOption('fractionMaxDenominator','12' ), 10 );
         var minDenominator = parseInt( quiz.getOption('fractionMinDenominator','1' ), 10 );
@@ -108,24 +108,25 @@ var fractionQuestion = (function(){
 		quiz.questionPrompt( 'Sum?' );
 
 		// Save the parameters for redrawing durring a resize
-		saved.denominator = d;
-		saved.numerator1 = n1;
-		saved.numerator2 = n2;
+		saved.d1 = d;
+		saved.d2 = d;
+		saved.n1 = n1;
+		saved.n2 = n2;
 		saved.quiz = quiz;
+
+    	var canvas = quiz.genericCanvas;
+        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
 		quiz.onResize = redrawPair;
 		redrawPair();
     }
 	function simpleSub(quiz){
-    	var canvas = quiz.genericCanvas;
-        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
         
         var maxDenominator = parseInt( quiz.getOption('fractionMaxDenominator','12' ), 10 );
         var minDenominator = parseInt( quiz.getOption('fractionMinDenominator','1' ), 10 );
 
         var d = Math.round( minDenominator + Math.random()*(maxDenominator-minDenominator) );
         var n1 = Math.round( d*Math.random() );
-        var n2 = Math.round( d*Math.random() );
-		n1 = n1+n2;
+        var n2 = Math.round( n1*Math.random() );
 
 		var numeratorDiff = n1-n2;
 
@@ -144,7 +145,6 @@ var fractionQuestion = (function(){
 		answers.push( answer );
 		answers = quiz.shuffle( answers );
 
-		quiz.onResize = quiz.doNothing;
 		quiz.choiceSet(1,answers[0], answer===answers[0]);
 		quiz.choiceSet(2,answers[1], answer===answers[1]);
 		quiz.choiceSet(3,answers[2], answer===answers[2]);
@@ -153,14 +153,64 @@ var fractionQuestion = (function(){
 		quiz.questionPrompt( 'Difference?' );
 
 		// Save the parameters for redrawing durring a resize
-		saved.denominator = d;
-		saved.numerator1 = n1;
-		saved.numerator2 = n2;
+		saved.d1 = d;
+		saved.d2 = d;
+		saved.n1 = n1;
+		saved.n2 = n2;
 		saved.quiz = quiz;
+
+    	var canvas = quiz.genericCanvas;
+        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
 		quiz.onResize = redrawPair;
 		redrawPair();
     }
-	function _simpleSum(quiz){
+	function complexAdd(quiz){
+        
+        var maxDenominator = parseInt( quiz.getOption('fractionMaxDenominator','12' ), 10 );
+        var minDenominator = parseInt( quiz.getOption('fractionMinDenominator','1' ), 10 );
+
+        var d1 = Math.round( minDenominator + Math.random()*(maxDenominator-minDenominator) );
+        var d2 = Math.round( minDenominator + Math.random()*(maxDenominator-minDenominator) );
+        var n1 = Math.round( Math.random()*d1 );
+        var n2 = Math.round( Math.random()*d2 );
+		var top = n1*d2+n2*d1;
+		var bot = d1*d2;
+
+		// Generate all answers from min to max
+		var i, possibleAnswers = [];
+		for( i=0; i<bot; i+=1 ){
+			possibleAnswers.push(i+'/'+bot);
+		}
+
+		// Get correct one and 3 more answers then shuffle all for randomness
+		var answer = top +'/'+ bot;
+		if( top < possibleAnswers.length ){
+			possibleAnswers.splice( top, 1 );
+		}
+		var answers = quiz.choose( possibleAnswers, 3 );
+		answers.push( answer );
+		answers = quiz.shuffle( answers );
+
+		quiz.choiceSet(1,answers[0], answer===answers[0]);
+		quiz.choiceSet(2,answers[1], answer===answers[1]);
+		quiz.choiceSet(3,answers[2], answer===answers[2]);
+		quiz.choiceSet(4,answers[3], answer===answers[3]);
+		quiz.questionNumbers( n1+'/'+d1, '+'+n2+'/'+d2 );
+		quiz.questionPrompt( 'Sum?' );
+
+		// Save the parameters for redrawing durring a resize
+		saved.d1 = d1;
+		saved.d2 = d2;
+		saved.n1 = n1;
+		saved.n2 = n2;
+		saved.quiz = quiz;
+
+    	var canvas = quiz.genericCanvas;
+        canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+		quiz.onResize = redrawPair;
+		redrawPair();
+    }
+	function _complexSum(quiz){
     	var canvas = quiz.genericCanvas;
         canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
         
@@ -169,7 +219,8 @@ var fractionQuestion = (function(){
         var maxNumerator = parseInt( quiz.getOption('fractionMaxNumerator','6' ), 10 );
         var minNumerator = parseInt( quiz.getOption('fractionMinNumerator','0' ), 10 );
 
-        var d = Math.round( minDenominator + Math.random()*(maxDenominator-minDenominator) );
+        var d1 = Math.round( minDenominator + Math.random()*(maxDenominator-minDenominator) );
+        var d2 = Math.round( minDenominator + Math.random()*(maxDenominator-minDenominator) );
         var n1 = Math.round( minNumerator + Math.random()*(maxNumerator-minNumerator) );
         var n2 = Math.round( minNumerator + Math.random()*(maxNumerator-minNumerator) );
 		var numeratorSum = n1+n2;
@@ -260,7 +311,8 @@ var fractionQuestion = (function(){
 		var question = quiz.choose([
 			simplePic,
 			simpleAdd,
-			simpleSub
+			simpleSub,
+			complexAdd
 		],1)[0];
 		question(quiz);
 	}
