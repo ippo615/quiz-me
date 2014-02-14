@@ -3,7 +3,7 @@
   <head>
   <meta charset="UTF-8">
 
-  <title>Anything Quiz</title>
+  <title>Fractions Quiz</title>
 
   <meta name="description" content="Anything Quiz">
   <meta name="author" content="Andrew Ippoliti">
@@ -19,11 +19,6 @@
 		<script type="text/javascript" src="vendor/excanvas.js"></script>
 	<![endif]-->
 	<script type="text/javascript" src="quiz.js"></script>
-	<script type="text/javascript" src="questions/presidents.js"></script>
-	<script type="text/javascript" src="questions/math.js"></script>
-	<script type="text/javascript" src="questions/perimeter.js"></script>
-	<script type="text/javascript" src="questions/periodic-table.js"></script>
-	<script type="text/javascript" src="questions/clock.js"></script>
 	<script type="text/javascript" src="questions/fractions.js"></script>
   </head>
   <body id="global-container" class="no-select">
@@ -47,39 +42,10 @@
     
     <script type="text/javascript">
 
-var formatToInteger = function (x) {
-    return x.toFixed(0);
-};
-
-function randomQuestion(quiz){
-	var rn = Math.random();
-	if( rn < 0.1 ){
-		presidentialQuestion(quiz);
-	}else if( rn < 0.2 ){
-		periodicTableQuestion.any(quiz);		
-	}else if( rn < 0.6 ){
-		mathQuestions.any(quiz);
-	}else if( rn < 0.8 ){
-		perimeterQuestion(quiz);
-	}else if( rn < 0.9 ){
-		clockQuestion(quiz);
-	}else{
-		fractionQuestion.any(quiz);
-	}
-}
-
-
 onload = function(){
 	var myQuiz = new Quiz({
-		makeQuestion: randomQuestion,
-		options: {
-			clockMinuteHandColor: '#00EEAA',
-			clockMinuteTickColor: '#00EEAA',
-			clockHourHandColor: '#FFF',
-			clockHourTickColor: '#FFF',
-			clockFaceColor: 'black',
-			clockOutlineColor: '#AAA'
-		}
+		makeQuestion: fractionQuestion.any,
+		options: {}
 	});
 	myQuiz.resize();
 	myQuiz.newQuestion();

@@ -374,6 +374,30 @@ var Quiz = (function(){
         }
         return value;
 	};
+	Quiz.prototype.shuffle = function(things) {
+		var nThings = things.length;
+		var i, a, b, swap, l = Math.floor(nThings * 0.5);
+		for (i = 0; i < l; i += 1) {
+		    a = Math.floor(Math.random() * nThings);
+		    b = Math.floor(Math.random() * nThings);
+		    swap = things[a];
+		    things[a] = things[b];
+		    things[b] = swap;
+		}
+		return things;
+	};
+	Quiz.prototype.choose = function(things,n){
+		var results = [];
+		var nEntries = things.length, index, selected = [];
+		while( results.length < n ){
+			index = Math.floor( Math.random()*nEntries );
+			if( !(index in selected) ){
+				selected[index] = true;
+				results.push( things[index] );
+			}
+		}
+		return results;
+	};
 
 	function quizAsk(quiz){
 		setTimeout(function () {
