@@ -50,18 +50,18 @@ var formatToInteger = function (x) {
     return x.toFixed(0);
 };
 
-function randomQuestion(quiz,options){
+function randomQuestion(quiz){
 	var rn = Math.random();
 	if( rn < 0.1 ){
-		presidentialQuestion(quiz,options);
+		presidentialQuestion(quiz);
 	}else if( rn < 0.2 ){
-		periodicTableQuestion.any(quiz,options);		
+		periodicTableQuestion.any(quiz);		
 	}else if( rn < 0.6 ){
-		mathQuestions.any(quiz,options);
+		mathQuestions.any(quiz);
 	}else if( rn < 0.9 ){
-		perimeterQuestion(quiz,options);
+		perimeterQuestion(quiz);
 	}else{
-		clockQuestion(quiz,options);
+		clockQuestion(quiz);
 	}
 }
 
