@@ -265,8 +265,8 @@ var Quiz = (function(){
 
 	var Quiz = function(config){
 		this.baseSizeX = getOption(config,'baseSizeX',320);
-		this.baseSizeY = getOption(config,'baseSizeY',240);
-		this.baseFontSize = getOption(config,'baseFontSize',8);
+		this.baseSizeY = getOption(config,'baseSizeY',320);
+		this.baseFontSize = getOption(config,'baseFontSize',10);
 		this.globalScale = 1;
 
 		this.makeQuestion = getOption(config,'makeQuestion',doNothing);
@@ -312,7 +312,7 @@ var Quiz = (function(){
 		this.questionType = 'text';
 		this.questionPrompt('');
 		this.questionContainer.innerHTML = '<div style="padding: 0 1em;">'+text+'</div>';
-		this.questionContainer.style.fontSize = '4em';
+		//this.questionContainer.style.fontSize = '4em';
 		this.resize();
 	};
 	Quiz.prototype.questionLongText = function(text){
@@ -321,9 +321,9 @@ var Quiz = (function(){
 		this.questionContainer.innerHTML = '<div style="padding: 0 1em;">'+text+'</div>';
 		this.resize();
 		// make sure we have enough room for all the text
-		var w = parseFloat( this.questionContainer.style.width );
+		//var w = parseFloat( this.questionContainer.style.width );
 		// 900px width, 150 characters, 2em
-		this.questionContainer.style.fontSize = (2 * (0.4*(80/text.length)+0.6*(w/900)))+'em';
+		//this.questionContainer.style.fontSize = (2 * (0.4*(80/text.length)+0.6*(w/900)))+'em';
 	};
 	Quiz.prototype.questionNumbers = function(top,bottom){
 		this.questionType = 'number';
@@ -435,6 +435,7 @@ var Quiz = (function(){
 			var e = event || window.event;
 			e.preventDefault ? e.preventDefault() : e.returnValue = false;
 			quizAsk(quiz);
+			quiz.resize();
 		};
 	}
 	Quiz.prototype.setupUi = function(){
@@ -474,85 +475,63 @@ var Quiz = (function(){
 		node.style.width = xSize+'px';
 		node.style.height = ySize+'px';
 	}
-	
-	Quiz.prototype.resizeVertical = function(){
+
+	function computeFontSize(w,h,nLetters){
+		return Math.sqrt( w*h / nLetters );
+	}
+
+	Quiz.prototype.resize = function(){
 		var baseSizeX = this.baseSizeX;
 		var baseSizeY = this.baseSizeY;
 		var baseSquare = Math.min(baseSizeX, baseSizeY);
 		var baseFontSize = this.baseFontSize;
+
 		var globalWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		var globalHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-		this.globalScale = findScale(baseSizeX, baseSizeY, globalWidth, globalHeight);
-		var globalScale = this.globalScale;
+		var globalScale = findScale(baseSizeX, baseSizeY, globalWidth, globalHeight);
 
+		this.globalScale = globalScale;
+
+		this.globalContainer.style.fontSize = Math.round(globalScale * baseFontSize)+'px';
+
+		var halfHeight = Math.round(globalHeight*0.5);
+		var halfWidth = Math.round(globalWidth*0.5);
+		
 		resizeCanvas(this.overlayCanvas,globalWidth,globalHeight);
 		resizeCanvas(this.genericCanvas,globalWidth,globalHeight);
 
 		sizeNode(this.globalContainer,globalWidth,globalHeight);
-		this.globalContainer.style.fontSize = Math.round(globalScale * baseFontSize)+'px';
 
-		sizeNode(this.questionContainer,globalWidth,Math.floor(baseSquare*globalScale));
-		var btnContainer = this.buttonContainer;
-		btnContainer.style.width = globalWidth+'px';
-		var buttonTop = globalHeight - (19 * globalScale * baseFontSize);
-		//btnContainer.style.top = baseSquare*globalScale+'px';
-		btnContainer.style.top = buttonTop + 'px';
-		//btnContainer.style.left = '0px';
-		btnContainer.style.right = '0px';
-		if( this.questionType === 'text' ){
+		var questionPart = 0.65;
+		var answerPart = 0.35;
+		var fontSize;
+
+		if( globalWidth > globalHeight ){
+			fontSize = computeFontSize(globalWidth*0.5,globalHeight,this.questionContainer.innerHTML.length);
+			sizeNode(this.questionContainer,globalWidth*questionPart,globalHeight);		
+			sizeNode(this.buttonContainer,globalWidth*answerPart,globalHeight);
+			this.buttonContainer.style.top = '0px';
+			this.buttonContainer.style.left = (globalWidth*questionPart)+'px';
 			delClass(this.answerContainer, 'shrink');
 			delClass(this.overlayOptionContainer, 'shrink');
 		}else{
+			fontSize = computeFontSize(globalWidth,globalHeight*0.5,this.questionContainer.innerHTML.length);
+			sizeNode(this.questionContainer,globalWidth,globalHeight*questionPart);		
+			sizeNode(this.buttonContainer,globalWidth,globalHeight*answerPart);
+			this.buttonContainer.style.top = (globalHeight*0.5)+'px';//(globalHeight*questionPart)+'px';
+			this.buttonContainer.style.left = '0px';
 			addClass(this.answerContainer, 'shrink');
 			addClass(this.overlayOptionContainer, 'shrink');
 		}
-	};
-
-	Quiz.prototype.resizeHorizontal = function(){
-		var baseSizeX = this.baseSizeX;
-		var baseSizeY = this.baseSizeY;
-		var baseSquare = Math.min(baseSizeX, baseSizeY);
-		var baseFontSize = this.baseFontSize;
-		var globalWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-		var globalHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-		this.globalScale = findScale(baseSizeX, baseSizeY, globalWidth, globalHeight);
-		var globalScale = this.globalScale;
-
-		resizeCanvas(this.overlayCanvas,globalWidth,globalHeight);
-		resizeCanvas(this.genericCanvas,globalWidth,globalHeight);
-
-		sizeNode(this.globalContainer,globalWidth,globalHeight);
-		this.globalContainer.style.fontSize = Math.round(globalScale * baseFontSize)+'px';
-
-		var btnContainer = this.buttonContainer;
 
 		if( this.questionType === 'text' ){
-			sizeNode(this.questionContainer,globalWidth,globalHeight);
-			btnContainer.style.width = globalWidth + 'px';
-			//btnContainer.style.top = baseSquare*globalScale+'px';
-			btnContainer.style.top = (globalHeight - (13 * globalScale * baseFontSize)) + 'px';
-			//btnContainer.style.left = '0px';
-			btnContainer.style.right = '0px';
-			addClass(this.answerContainer, 'shrink');
-			addClass(this.overlayOptionContainer, 'shrink');
+			this.questionContainer.style.fontSize = fontSize +'px';
 		}else{
-			sizeNode(this.questionContainer,Math.floor(baseSquare*globalScale),globalHeight);
-			btnContainer.style.width = Math.round(globalScale*baseFontSize*20)+'px';
-			btnContainer.style.right = '0px';
-			btnContainer.style.top = '0.5em';
-			delClass(document.getElementById('answer-choices'), 'shrink');
-			delClass(document.getElementById('overlay-options'), 'shrink');
+			this.questionContainer.style.fontSize = '4em';
 		}
-	};
 
-	Quiz.prototype.resize = function(){
-		if (window.innerWidth < window.innerHeight) {
-		    this.resizeVertical();
-		} else {
-		    this.resizeHorizontal();
-		}
 		this.onResize();
-	};
+	};	
 
 	return Quiz;
 })();

@@ -61,7 +61,7 @@
   }
   #btn-container {
     font-size: 2em;
-  	overflow: hidden;
+  	overflow: show;
     width: 120px;
     position: absolute;
     top: 0;
@@ -85,7 +85,7 @@
   }
   
   /* Number question stuff */
-  #prompt { text-align: center; }
+  #prompt { text-align: center; padding: 0.4em 0;}
   #question-container {
     position: absolute;
     padding-top:0.5em;
