@@ -334,18 +334,25 @@ var Quiz = (function(){
 		this.resize();
 	};
 
-	Quiz.prototype.askQuestion = function(question,answer,choices){
+	Quiz.prototype.askQuestion = function(quiz,question,answer,choices){
+
+		// Remove the correct answer from the choices if it is there
+		var i,l=choices.length;
+		for( i=0; i<l; i+=1 ){
+			if( choices[i] === answer ){ choices.splice(i,1); }
+		}
+
+		// Get 3 other choices and shuffle the answer choices
 		var answers = quiz.choose( choices, 3 );
 		answers.push( answer );
 		answers = quiz.shuffle( answers );
 
+		// Setup the UI stuff
 		quiz.choiceSet(1,answers[0], answer===answers[0]);
 		quiz.choiceSet(2,answers[1], answer===answers[1]);
 		quiz.choiceSet(3,answers[2], answer===answers[2]);
 		quiz.choiceSet(4,answers[3], answer===answers[3]);		
-
 		quiz.questionLongText( question );
-
 		quiz.onResize = quiz.doNothing;
 	};
 
