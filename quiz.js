@@ -334,6 +334,21 @@ var Quiz = (function(){
 		this.resize();
 	};
 
+	Quiz.prototype.askQuestion = function(question,answer,choices){
+		var answers = quiz.choose( choices, 3 );
+		answers.push( answer );
+		answers = quiz.shuffle( answers );
+
+		quiz.choiceSet(1,answers[0], answer===answers[0]);
+		quiz.choiceSet(2,answers[1], answer===answers[1]);
+		quiz.choiceSet(3,answers[2], answer===answers[2]);
+		quiz.choiceSet(4,answers[3], answer===answers[3]);		
+
+		quiz.questionLongText( question );
+
+		quiz.onResize = quiz.doNothing;
+	};
+
 	Quiz.prototype.choiceHide = function(index){
 		addClass( this.nodeChoices[index-1], 'inactive btn-hidden' );
 	};
