@@ -438,6 +438,7 @@ var Quiz = (function(){
 			quiz.genericCanvas.getContext('2d').clearRect(0,0,quiz.genericCanvas.width,quiz.genericCanvas.height);
 			quiz.overlay.clear();
 			quiz.makeQuestion(quiz);
+			quiz.resize();
 		}, 1200);
 		setTimeout(function () {
 			quiz.choiceShow(4);
