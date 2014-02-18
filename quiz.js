@@ -491,8 +491,8 @@ var Quiz = (function(){
 	};
 
 	function resizeCanvas(canvas,xSize,ySize){
-		canvas.width = xSize;
-		canvas.height = ySize;
+		canvas.width = Math.round(xSize);
+		canvas.height = Math.round(ySize);
 	}
 	function sizeNode(node,xSize,ySize){
 		node.style.width = xSize+'px';

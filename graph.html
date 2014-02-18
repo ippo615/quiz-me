@@ -3,9 +3,9 @@
   <head>
   <meta charset="UTF-8">
 
-  <title>Anything Quiz</title>
+  <title>Graph Quiz</title>
 
-  <meta name="description" content="Anything Quiz">
+  <meta name="description" content="Graph Quiz">
   <meta name="author" content="Andrew Ippoliti">
 
   <meta name="HandheldFriendly" content="True">
@@ -19,15 +19,6 @@
 		<script type="text/javascript" src="vendor/excanvas.js"></script>
 	<![endif]-->
 	<script type="text/javascript" src="quiz.js"></script>
-	<script type="text/javascript" src="questions/presidents.js"></script>
-	<script type="text/javascript" src="questions/math.js"></script>
-	<script type="text/javascript" src="questions/perimeter.js"></script>
-	<script type="text/javascript" src="questions/periodic-table.js"></script>
-	<script type="text/javascript" src="questions/clock.js"></script>
-	<script type="text/javascript" src="questions/fractions.js"></script>
-	<script type="text/javascript" src="questions/math-word-problems.js"></script>
-	<script type="text/javascript" src="questions/linux.js"></script>
-	<script type="text/javascript" src="questions/grammar.js"></script>
 	<script type="text/javascript" src="questions/graph.js"></script>
   </head>
   <body id="global-container" class="no-select">
@@ -51,37 +42,11 @@
     
     <script type="text/javascript">
 
-var formatToInteger = function (x) {
-    return x.toFixed(0);
-};
-
-function randomQuestion(quiz){
-	var question = quiz.choose([
-		presidentialQuestion,
-		periodicTableQuestion.any,
-		mathQuestions.any,
-		perimeterQuestion,
-		clockQuestion,
-		fractionQuestion.any,
-		mathWordQuestions.any,
-		grammar.any,
-		linuxQuestion.any,
-		graphQuestion.any
-	],1)[0];
-	question(quiz);
-}
-
-
 onload = function(){
-	var myQuiz = new Quiz({
-		makeQuestion: randomQuestion,
+	myQuiz = new Quiz({
+		makeQuestion: graphQuestion.any,
 		options: {
-			clockMinuteHandColor: '#00EEAA',
-			clockMinuteTickColor: '#00EEAA',
-			clockHourHandColor: '#FFF',
-			clockHourTickColor: '#FFF',
-			clockFaceColor: 'black',
-			clockOutlineColor: '#AAA'
+
 		}
 	});
 	myQuiz.resize();
