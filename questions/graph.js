@@ -10,9 +10,54 @@ var graphQuestion = (function(){
 		}
 		return val;
 	}
+	function polyDiff(poly){
+		var i, l = poly.length;
+		var newPoly = [];
+		for( i=1; i<l; i+=1 ){
+			newPoly.push( poly[i]*i );
+		}
+		return newPoly;
+	}
+	function polyMul(aPoly,bPoly){
+		var a, al = aPoly.length;
+		var b, bl = bPoly.length;
+		var newPoly = [];
+		var n, nl = al + bl;
+		for( n=0; n<nl; n+=1 ){
+			newPoly.push(0);
+		}
+		for( a=0; a<al; a+=1 ){
+			for( b=0; b<bl; b+=1 ){
+				newPoly[a+b] += aPoly[a]*bPoly[b];
+			}
+		}
+		return newPoly;
+	}
+	function polyDiv(aPoly,bPoly){
+		var a, al = aPoly.length;
+		var b, bl = bPoly.length;
+		var newPoly = [];
+		var n, nl = al + bl;
+		for( n=0; n<nl; n+=1 ){
+			newPoly.push(0);
+		}
+		for( a=0; a<al; a+=1 ){
+			for( b=0; b<bl; b+=1 ){
+				newPoly[a+b] += aPoly[a]/bPoly[b];
+			}
+		}
+		return newPoly;
+	}
 	function polyToEquation(poly,symbol){
 		var str = '';
 		var i, l=poly.length;
+		var isAllZero = true;
+		for( i=0; i<l; i+=1 ){ 
+			if( poly[i] !== 0 ){
+				isAllZero = false;
+			}
+		}
+		if( isAllZero ){ return '0'; }
 		var symbols = [];
 		if( l >= 1 && poly[0] !== 0 ){ symbols.push( poly[0] ); }
 		if( l >= 2 && poly[1] !== 0 ){ symbols.push( poly[1]+symbol ); }
@@ -34,7 +79,14 @@ var graphQuestion = (function(){
 		return str;
 	}
 
+	console.info( polyToEquation( polyDiv(polyMul([1,1,1],[1,0]),[1,0]), 'x' ) ); // 
+
 	/*
+	console.info( polyToEquation( polyMul([1,1,1],[1,0]), 'x' ) ); // 
+	console.info( polyToEquation( polyMul([0,0,1],[0,0,1]), 'x' ) ); //
+	console.info( polyToEquation( polyMul([1,1],[1,1]), 'x' ) ); // (x+1)**2
+	console.info( polyToEquation( polyMul([0,1],[0,1]), 'x' ) ); // (x)**2
+
 	console.info( polyEval( [1,1,1], 0) );
 	console.info( polyEval( [1,1,1], 1) );
 	console.info( polyEval( [0,2,0], 1) );
@@ -45,6 +97,9 @@ var graphQuestion = (function(){
 	console.info( polyToEquation( [3,0,-2], 'x' ) );
 	console.info( polyToEquation( [1,1,0,12], 'x' ) );
 	*/
+
+	//console.info( polyToEquation( [1,1,1,1], 'x' ) );
+	//console.info( polyToEquation( polyDiff(polyDiff([1,1,1,1])), 'x' ) );
 
 	function remap(fromValue,fromMin,fromMax,toMin,toMax){
 
@@ -82,10 +137,13 @@ var graphQuestion = (function(){
 		ctx.save();
 		ctx.beginPath();
 		ctx.lineWidth = 4.0*quiz.globalScale;
+		ctx.lineJoin = 'round';
+		ctx.lineCap = 'round';
 		ctx.strokeStyle = 'black';
 		for( x=1; x<xSize; x+=1 ){
 			xFn = remap(x,0,xSize,xMin,xMax);
 			yFn = polyEval(poly,xFn);
+			//yFn = 5*Math.sin(0.1*2*Math.PI*xFn);
 			y = remap(yFn,yMin,yMax,0,ySize);
 			ctx.lineTo(x,ySize-y);
 		}
@@ -175,11 +233,28 @@ var graphQuestion = (function(){
 		}
 		askPoly(poly,choices,quiz);
 	}
+	function power(quiz){
+		var polys = [
+			[0,1],
+			[0,0,1],
+			[0,0,0,1],
+			[0,0,0,0,1],
+			[0,0,0,0,0,1]
+		];
+		var poly = quiz.choose(polys,1)[0];
+		var i, l = polys.length;
+		var choices = [];
+		for( i=0; i<l; i+=1 ){
+			choices.push( 'y='+polyToEquation( polys[i], 'x' ) );
+		}
+		askPoly(poly,choices,quiz);	
+	}
 	function any(quiz){
 		var question = quiz.choose([
 			constant,
 			linear,
-			quadratic
+			quadratic,
+			power
 		],1)[0];
 		question(quiz);
 	}
@@ -188,6 +263,7 @@ var graphQuestion = (function(){
 		any: any,
 		constant: constant,
 		linear: linear,
-		quadratic: quadratic
+		quadratic: quadratic,
+		power: power
 	};
 })();
