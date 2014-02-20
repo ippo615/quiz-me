@@ -29,6 +29,7 @@
 	<script type="text/javascript" src="questions/linux.js"></script>
 	<script type="text/javascript" src="questions/grammar.js"></script>
 	<script type="text/javascript" src="questions/graph.js"></script>
+	<script type="text/javascript" src="questions/polynomial.js"></script>
   </head>
   <body id="global-container" class="no-select">
 	<div id="question-container" class="no-select"></div>
@@ -66,7 +67,8 @@ function randomQuestion(quiz){
 		mathWordQuestions.any,
 		grammar.any,
 		linuxQuestion.any,
-		graphQuestion.any
+		graphQuestion.any,
+		polynomialQuestion.any
 	],1)[0];
 	question(quiz);
 }
@@ -76,12 +78,7 @@ onload = function(){
 	var myQuiz = new Quiz({
 		makeQuestion: randomQuestion,
 		options: {
-			clockMinuteHandColor: '#00EEAA',
-			clockMinuteTickColor: '#00EEAA',
-			clockHourHandColor: '#FFF',
-			clockHourTickColor: '#FFF',
-			clockFaceColor: 'black',
-			clockOutlineColor: '#AAA'
+
 		}
 	});
 	myQuiz.resize();
