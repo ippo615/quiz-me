@@ -88,6 +88,31 @@ onload = function(){
 		myQuiz.resize()	;
 	};
 
+	myQuiz.registerQuestion({
+		tags: 'math,reading'.split(','),
+		name: 'any math word question',
+		question: mathWordQuestions.any
+	});
+	myQuiz.registerQuestion({
+		tags: 'life'.split(','),
+		name: 'clock',
+		question: clockQuestion
+	});
+
+	myQuiz.registerQuestion({
+		tags: 'math,fraction'.split(','),
+		name: 'fractions',
+		question: fractionQuestion.any
+	});
+	myQuiz.registerQuestion({
+		tags: 'math,fraction,addition'.split(','),
+		name: 'fractions',
+		question: fractionQuestion.any
+	});
+
+	console.info( myQuiz.taggedQuestions );
+	console.info( myQuiz.getTags() );
+
 };
 
     </script>

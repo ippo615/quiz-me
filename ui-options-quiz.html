@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+
+  <title>Addition Quiz</title>
+
+  <meta name="description" content="Addition Quiz">
+  <meta name="author" content="Andrew Ippoliti">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=320, height=320, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />	
+
+  <style type="text/css">
+  .input-group {
+	position: relative;
+	padding: 0.2em;
+	width: 100%;
+  }
+  .input-label {
+	width: 8em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: block;
+	vertical-align: middle;
+	position:relative;
+	z-index: 10;
+	height: 1.1em;
+  }
+  .input-option, .input-select {
+    background: none;
+  }
+  .input-text, .input-select, .input-option, .input-range, .checkbox-status {
+	border: medium none;
+	font-size: 1em;
+	vertical-align: middle;
+	opacity: 1.0;
+	position: absolute;
+	top:0.1em;
+	right: 1em;
+	width: 90%;
+	padding-left: 8em;
+	z-index: 1;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+  }
+  #options-form {
+	z-index: 100;
+	font-size: 2em;
+	background: #FFF;
+	position: relative;
+	overflow:hidden;
+	width: 100%;
+	max-height: 0%;
+	box-shadow: 0 0 10px #000;
+  }
+  #main-container {
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height:100%;
+    max-height:100%;
+  }
+  </style>
+	<link rel="stylesheet" href="style.css">
+	<!--[if IE]>
+		<script type="text/javascript" src="vendor/excanvas.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="quiz.js"></script>
+	<script type="text/javascript" src="questions/math.js"></script>
+  </head>
+  <body id="global-container" class="no-select">
+	<div id="main-container" class="no-select animated">
+		<div id="question-container" class="no-select"></div>
+		<canvas id="generic-canvas" class="no-select" width="320" height="320" ></canvas>
+		<canvas id="overlay-canvas" class="no-select" width="320" height="320" ></canvas>
+		<div id="btn-container" class="no-select">
+		  <div id="prompt"></div>
+		  <div id="answer-choices" class="no-select"><!-- I have to comment out whitespace; otherwise it messes up the spacing
+		  	--><a id="choice-1" class="btn animated no-select shrinkable" href=""></a><!--
+		    --><a id="choice-2" class="btn animated no-select shrinkable" href=""></a><!--
+		  	--><a id="choice-3" class="btn animated no-select shrinkable" href=""></a><!--
+		  	--><a id="choice-4" class="btn animated no-select shrinkable" href=""></a><!--
+		  --></div>
+		  <a id="new-question" class="btn animated no-select" href="">New</a>
+		  <a id="show-options" class="btn animated no-select" href="#config">Options</a>
+		  <div id="overlay-options"><!--
+			--><a id="pen-size" class="btn animated no-select shrinkable" href="">Size</a><!--
+			--><a id="pen-color" class="btn animated no-select shrinkable" href="">Color</a><!--
+		  --></div>
+		</div>
+	</div>
+	<form id="options-form" class="animated no-select"></form>
+    <script type="text/javascript">
+
+var formatToInteger = function (x) {
+    return x.toFixed(0);
+};
+
+onload = function(){
+	myQuiz = new Quiz({
+		makeQuestion: mathQuestions.addition,
+		options: getUrlParms()
+	});
+	myQuiz.resize();
+	myQuiz.newQuestion();
+
+	window.onresize = function(){
+		myQuiz.resize()	;
+	};
+
+};
+
+function getSelectValue(domSelect) {
+	var selectedIndex = domSelect.selectedIndex;
+	return domSelect.options[selectedIndex].value;
+}
+
+function createInputText(id, label, options) {
+	var html = '';
+	html += '<div class="input-group">';
+	html += '<label class="input-label" for="' + id + '">' + label + '</label>';
+	//value,min,max,steps
+	html += '<input type="text" class="input-text" ';
+	html += 'name="' + id + '" ';
+	html += 'id="' + id + '" ';
+	if (options.hasOwnProperty('placeholder')) {
+		html += 'placeholder="' + options.placeholder + '" ';
+	}
+	if (options.hasOwnProperty('value')) {
+		html += 'value="' + options.value + '" ';
+	}
+	html += '/>'
+	html += '</div>';
+	return html;
+}
+
+
+
+function createInputSlider(id, label, options) {
+	var html = '';
+	html += '<div class="input-group">';
+	html += '<label for="' + id + '" class="input-label">' + label + '</label>';
+	//value,min,max,steps
+	html += '<input type="range" class="input-range" ';
+	html += 'name="' + id + '" ';
+	html += 'id="' + id + '" ';
+	if (options.hasOwnProperty('min')) {
+		html += 'min="' + options.min + '" ';
+	}
+	if (options.hasOwnProperty('max')) {
+		html += 'max="' + options.max + '" ';
+	}
+	if (options.hasOwnProperty('step')) {
+		html += 'step="' + options.step + '" ';
+	}
+	if (options.hasOwnProperty('value')) {
+		html += 'value="' + options.value + '" ';
+	}
+	html += '/>'
+	html += '</div>';
+	return html;
+}
+
+function createInputSelect(id, label, options) {
+	var html = '';
+	html += '<div class="input-group">';
+	html += '<label for="' + id + '" class="input-label">' + label + '</label>';
+	html += '<select name="' + id + '" id="' + id + '" class="input-select">';
+	var prop;
+	for (prop in options) {
+		if (options.hasOwnProperty(prop)) {
+			html += '<option value="' + options[prop] + '" class="input-option">';
+			html += prop;
+			html += '</option>';
+		}
+	}
+	html += '</select>';
+	html += '</div>';
+	return html;
+}
+
+function formToObject(form) {
+	var inputs = form.getElementsByTagName('input');
+	var selects = form.getElementsByTagName('select');
+	var object = {};
+	var dom, i, l = inputs.length;
+	for (i = 0; i < l; i += 1) {
+		dom = inputs[i];
+		object[dom.id] = dom.value;
+	}
+	l = selects.length;
+	for (i = 0; i < l; i += 1) {
+		dom = selects[i];
+		object[dom.id] = getSelectValue(dom);
+	}
+	return object;
+}
+
+function optionsToForm(options) {
+	var html = '';
+	var i, opt, l = options.length;
+	for (i = 0; i < l; i += 1) {
+		opt = options[i];
+		if (opt.type === 'slider') {
+			html += createInputSlider(opt.name, opt.name, {
+				name: opt.name,
+				value: opt.value,
+				min: opt.min,
+				max: opt.max,
+				step: opt.step
+			});
+		} else if (opt.type === 'select') {
+			html += createInputSelect(opt.name, opt.name, opt.config);
+		}
+	}
+	return html;
+}
+
+var options = [];
+options.push({
+	name: 'minNumber',
+	type: 'slider',
+	min: 0,
+	max: 1000,
+	value: 0,
+	step: 1
+});
+options.push({
+	name: 'maxNumber',
+	type: 'slider',
+	min: 0,
+	max: 1000,
+	value: 0,
+	step: 1
+});
+options.push({
+	name: 'clockFaceColor',
+	type: 'select',
+	config: {
+		white: '#FFF',
+		red: '#F00',
+		orange: '#F80',
+		yellow: '#FF0',
+		lime: '#0F0',
+		green: '#080',
+		aqua: '#0FF',
+		blue: '#00F',
+		purple: '#F0F',
+		brown: '#888',
+		gray: '#888',
+		black: '#000'
+	}
+});
+
+function setupForm(domForm, options, onUpdate, onCancel) {
+	var html = optionsToForm(options);
+	html += '<div class="shrink">';
+	html += '<a id="update-options" class="btn animated no-select shrinkable" href="">Save</a>';
+	html += '<a id="cancel-options" class="btn animated no-select shrinkable" href="">Cancel</a>';
+	html += '</div>';
+	//html += '<button id="update-options">Update</button>'
+	domForm.innerHTML = html;
+	document.getElementById('update-options').onclick = function (e) {
+		e.preventDefault();
+		var options = formToObject(domForm);
+		onUpdate(options);
+	};
+	document.getElementById('cancel-options').onclick = function (e) {
+		e.preventDefault();
+		onCancel();
+		//domForm.reset();
+	};
+}
+
+setupForm(document.getElementById('options-form'), options, function (options) {
+	window.history.back();
+},function(){
+	window.history.back();
+});
+//document.getElementById('main-container').style.maxHeight = '0';
+	
+
+function showOptionsForm(){
+	document.getElementById('options-form').style.maxHeight = '100%';
+}
+function hideOptionsForm(){
+	document.getElementById('options-form').style.maxHeight = '0';
+}
+
+window.onhashchange = function(){
+	var hash = window.location.hash;
+	if( /^#config/i.test(hash) ){
+		showOptionsForm();		
+	}else{
+		hideOptionsForm();
+	}
+}
+function onHashChange(){
+	var hash = window.location.hash;
+	if( /^#edit/i.test(hash) ){
+		editEquation(hash.split('/')[1])();
+	}else{
+		showGraph();
+	}
+}
+    </script>
+  </body>
+</html>
+

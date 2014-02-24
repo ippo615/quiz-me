@@ -300,7 +300,21 @@ var Quiz = (function(){
 			quizAsk(this);
 		};		
 
+		this.serialNumber = 0;
+		this.tags = [];
+		this.taggedQuestions = {};
+		this.questions = [];
+
+		// Both of these objects store options
+		this.urlParms = getUrlParms();
+		this.uiOptions = {};
+
 		this.setupUi();
+	};
+
+	Quiz.prototype.getSerialNumber = function(){
+		this.serialNumber += 1;
+		return this.serialNumber;
 	};
 
 	Quiz.prototype.doNothing = function(){};
@@ -387,12 +401,18 @@ var Quiz = (function(){
 	};
 
 	Quiz.prototype.getOption = function(name,value){
+		// First check the ui
+		if( this.uiOptions.hasOwnProperty(name) ){
+			return this.uiOptions[name];
+		}
+		// then check the regular options
     	if( this.options.hasOwnProperty(name) ){
         	return this.options[name];
         }
+		// finally check the URL parms
         var lowerName = name.toLowerCase();
-        if( this.options.hasOwnProperty(lowerName) ){
-        	return this.options[lowerName];
+        if( this.urlParms.hasOwnProperty(lowerName) ){
+        	return this.urlParms[lowerName];
         }
         return value;
 	};
@@ -555,6 +575,196 @@ var Quiz = (function(){
 
 		this.onResize();
 	};	
+
+	Quiz.prototype.addTag = function(tag){
+		var i, l = this.tags.length;
+		var lowerTag = tag.toLowerCase();
+		for( i=0; i<l; i+=1 ){
+			if( this.tags[i] === lowerTag ){ break; }
+		}
+		if( i===l ){
+			this.tags.push(lowerTag);
+			this.taggedQuestions[lowerTag] = {};
+		}
+	};
+	Quiz.prototype.addTags = function(tags){
+		var i,l=tags.length;
+		for( i=0; i<l; i+=1 ){
+			this.addTag(tags[i]);
+		}
+	};
+	Quiz.prototype.clearTags = function(){ this.tags = []; };
+	Quiz.prototype.getTags = function(){ return this.tags; };
+
+	Quiz.prototype.tagQuestion = function(tag,name,question){
+		this.addTag(tag);
+		this.taggedQuestions[tag][name] = question;
+	};
+	Quiz.prototype.registerQuestion = function(config){
+		var tags = getOption(config,'tags',['untagged']);
+		var name = '';
+		if( 'name' in config ){
+			name = config['name'];
+		}else{
+			name = 'sn'+this.getSerialNumber();
+		}
+		var i,l = tags.length;
+		for( i=0; i<l; i+=1 ){
+			this.tagQuestion( tags[i], name, config.question );
+		}
+		this.questions.push( config.question );
+	};
+
+// ---------------------------------------------------- [ Quiz: Ui Options ] -
+	function getSelectValue(domSelect) {
+		var selectedIndex = domSelect.selectedIndex;
+		return domSelect.options[selectedIndex].value;
+	}
+
+	function createInputText(id, label, options) {
+		var html = '';
+		html += '<div class="input-group">';
+		html += '<label class="input-label" for="' + id + '">' + label + '</label>';
+		//value,min,max,steps
+		html += '<input type="text" class="input-text" ';
+		html += 'name="' + id + '" ';
+		html += 'id="' + id + '" ';
+		if (options.hasOwnProperty('placeholder')) {
+			html += 'placeholder="' + options.placeholder + '" ';
+		}
+		if (options.hasOwnProperty('value')) {
+			html += 'value="' + options.value + '" ';
+		}
+		html += '/>'
+		html += '</div>';
+		return html;
+	}
+
+
+
+	function createInputSlider(id, label, options) {
+		var html = '';
+		html += '<div class="input-group">';
+		html += '<label for="' + id + '" class="input-label">' + label + '</label>';
+		//value,min,max,steps
+		html += '<input type="range" class="input-range" ';
+		html += 'name="' + id + '" ';
+		html += 'id="' + id + '" ';
+		if (options.hasOwnProperty('min')) {
+			html += 'min="' + options.min + '" ';
+		}
+		if (options.hasOwnProperty('max')) {
+			html += 'max="' + options.max + '" ';
+		}
+		if (options.hasOwnProperty('step')) {
+			html += 'step="' + options.step + '" ';
+		}
+		if (options.hasOwnProperty('value')) {
+			html += 'value="' + options.value + '" ';
+		}
+		html += '/>'
+		html += '</div>';
+		return html;
+	}
+
+	function createInputSelect(id, label, options) {
+		var html = '';
+		html += '<div class="input-group">';
+		html += '<label for="' + id + '" class="input-label">' + label + '</label>';
+		html += '<select name="' + id + '" id="' + id + '" class="input-select">';
+		var prop;
+		for (prop in options) {
+			if (options.hasOwnProperty(prop)) {
+				html += '<option value="' + options[prop] + '" class="input-option">';
+				html += prop;
+				html += '</option>';
+			}
+		}
+		html += '</select>';
+		html += '</div>';
+		return html;
+	}
+
+	function formToObject(form) {
+		var inputs = form.getElementsByTagName('input');
+		var selects = form.getElementsByTagName('select');
+		var object = {};
+		var dom, i, l = inputs.length;
+		for (i = 0; i < l; i += 1) {
+			dom = inputs[i];
+			object[dom.id] = dom.value;
+		}
+		l = selects.length;
+		for (i = 0; i < l; i += 1) {
+			dom = selects[i];
+			object[dom.id] = getSelectValue(dom);
+		}
+		return object;
+	}
+
+	function optionsToForm(options) {
+		var html = '';
+		var i, opt, l = options.length;
+		for (i = 0; i < l; i += 1) {
+			opt = options[i];
+			if (opt.type === 'slider') {
+				html += createInputSlider(opt.name, opt.name, {
+					name: opt.name,
+					value: opt.value,
+					min: opt.min,
+					max: opt.max,
+					step: opt.step
+				});
+			} else if (opt.type === 'select') {
+				html += createInputSelect(opt.name, opt.name, opt.config);
+			}
+		}
+		return html;
+	}
+
+	function setupForm(domForm, options, onUpdate, onCancel) {
+		var html = optionsToForm(options);
+		html += '<div class="shrink">';
+		html += '<a id="update-options" class="btn animated no-select shrinkable" href="">Save</a>';
+		html += '<a id="cancel-options" class="btn animated no-select shrinkable" href="">Cancel</a>';
+		html += '</div>';
+		//html += '<button id="update-options">Update</button>'
+		domForm.innerHTML = html;
+		document.getElementById('update-options').onclick = function (e) {
+			e.preventDefault();
+			var options = formToObject(domForm);
+			onUpdate(options);
+		};
+		document.getElementById('cancel-options').onclick = function (e) {
+			e.preventDefault();
+			onCancel();
+			//domForm.reset();
+		};
+	}
+	function showOptionsForm(){
+		document.getElementById('options-form').style.maxHeight = '100%';
+	}
+	function hideOptionsForm(){
+		document.getElementById('options-form').style.maxHeight = '0';
+	}
+	Quiz.prototype.setupOptionsForm = function( options ){
+		var that = this;
+		setupForm(document.getElementById('options-form'), options, function (newOptions) {
+			that.uiOptions = newOptions;
+			console.info(that.uiOptions);
+			window.history.back();
+		},function(){
+			window.history.back();
+		});
+		window.onhashchange = function(){
+			var hash = window.location.hash;
+			if( /^#config/i.test(hash) ){
+				showOptionsForm();		
+			}else{
+				hideOptionsForm();
+			}
+		};
+	}
 
 	return Quiz;
 })();
