@@ -257,71 +257,132 @@ var fractionQuestion = (function(){
         var fractionLineColor = quiz.getOption('fractionLineColor','#000');
         
 		ctx.save();
-			//ctx.translate(x,y);
-			//ctx.scale(r,r);
-			
-            // Draw the filled stuff
+		//ctx.translate(x,y);
+		//ctx.scale(r,r);
+		if( denominator > 1 ){
+		    // Draw the filled stuff
 			ctx.fillStyle = fractionFillColor;
-            ctx.strokeStyle = fractionLineColor;
+		    ctx.strokeStyle = fractionLineColor;
 			ctx.lineCap = "round";
 			ctx.lineWidth = 0.05*r;
-            ctx.save();	
-            var i;
+		    ctx.save();	
+		    var i;
 			for (i=0; i<numerator; i++){
 				ctx.beginPath();
 				//ctx.rotate(2*Math.PI/fractionDemonimator);
 				ctx.moveTo(x,y);
 				ctx.lineTo(x+r*Math.cos(i*2*Math.PI/denominator),y+r*Math.sin(i*2*Math.PI/denominator));
-                ctx.arc(x,y,r,i*2*Math.PI/denominator,(i+1)*2*Math.PI/denominator,false);
-                ctx.lineTo(x,y);
-                ctx.fill()
+		        ctx.arc(x,y,r,i*2*Math.PI/denominator,(i+1)*2*Math.PI/denominator,false);
+		        ctx.lineTo(x,y);
+		        ctx.fill()
 				ctx.stroke();
 			}
 			ctx.restore();
-			
-            // Draw the empty stuff
-            ctx.fillStyle = fractionEmptyColor;
-            ctx.strokeStyle = fractionLineColor;
+		
+		    // Draw the empty stuff
+		    ctx.fillStyle = fractionEmptyColor;
+		    ctx.strokeStyle = fractionLineColor;
 			ctx.lineCap = "round";
 			ctx.lineWidth = 0.05*r;
-            ctx.save();	
-            var i;
+		    ctx.save();	
+		    var i;
 			for (i=numerator; i<denominator; i++){
 				ctx.beginPath();
 				//ctx.rotate(2*Math.PI/fractionDemonimator);
 				ctx.moveTo(x,y);
 				ctx.lineTo(x+r*Math.cos(i*2*Math.PI/denominator),y+r*Math.sin(i*2*Math.PI/denominator));
-                ctx.arc(x,y,r,i*2*Math.PI/denominator,(i+1)*2*Math.PI/denominator,false);
-                ctx.lineTo(x,y);
-                ctx.fill();
+		        ctx.arc(x,y,r,i*2*Math.PI/denominator,(i+1)*2*Math.PI/denominator,false);
+		        ctx.lineTo(x,y);
+		        ctx.fill();
 				ctx.stroke();
 			}
 			ctx.restore();
-            
-            // Draw a cirlce for good measure
-            ctx.strokeStyle = fractionOutlineColor;
-            ctx.beginPath();
-			ctx.arc(x,y,r,0,2*Math.PI,false);
-            ctx.stroke();
+        }else{
+			if( numerator === 0 ){
+			    ctx.fillStyle = fractionEmptyColor;
+			}else{
+			    ctx.fillStyle = fractionFillColor;
+			}
+		    ctx.strokeStyle = fractionLineColor;
+			ctx.lineCap = "round";
+			ctx.lineWidth = 0.05*r;
+		    ctx.save();	
+				ctx.beginPath();
+				//ctx.rotate(2*Math.PI/fractionDemonimator);
+				ctx.moveTo(x+r,y);
+			    ctx.arc(x,y,r,0,2*Math.PI,false);
+			    ctx.fill();
+				ctx.stroke();
+			ctx.restore();
+		}
+        // Draw a cirlce for good measure
+        ctx.strokeStyle = fractionOutlineColor;
+        ctx.beginPath();
+		ctx.arc(x,y,r,0,2*Math.PI,false);
+        ctx.stroke();
             
 		ctx.restore();
     }
 
 	function any(quiz){
-		var question = quiz.choose([
-			simplePic,
-			simpleAdd,
-			simpleSub,
-			complexAdd
-		],1)[0];
+		var availableQuestions = [];
+		var whichQuestion = quiz.getOption('fractionQuestion','any');
+
+		if( whichQuestion === 'simple' || whichQuestion === 'any' ){
+			availableQuestions.push(simplePic);
+		}
+		if( whichQuestion === 'add1' || whichQuestion === 'any' ){
+			availableQuestions.push(simpleAdd);
+		}
+		if( whichQuestion === 'sub1' || whichQuestion === 'any' ){
+			availableQuestions.push(simpleSub);
+		}
+		if( whichQuestion === 'add2' || whichQuestion === 'any' ){
+			availableQuestions.push(complexAdd);
+		}
+
+		var question = quiz.choose(availableQuestions,1)[0];
 		question(quiz);
 	}
+
+	var options = [];
+	options.push({
+		name: 'fractionQuestion',
+		type: 'select',
+		config: {
+			'Any Question':'any',
+			'Identify':'simple',
+			'Basic Addition':'add1',
+			'Basic Subtraction':'sub1',
+			'Adv. Addition':'add2'
+		}
+	});
+	options.push({
+		name: 'fractionFillColor',
+		type: 'select',
+		config: {
+			default: '#0DF',
+			white: '#FFF',
+			red: '#F00',
+			orange: '#F80',
+			yellow: '#FF0',
+			lime: '#0F0',
+			green: '#080',
+			aqua: '#0FF',
+			blue: '#00F',
+			purple: '#F0F',
+			brown: '#a52a2a',
+			gray: '#888',
+			black: '#000'
+		}
+	});
 
 	return {
 		simplePic:simplePic,
 		simpleAdd:simpleAdd,
 		simpleSub:simpleSub,
-		any: any
+		any: any,
+		options: options
 	};
 
 })();

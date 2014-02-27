@@ -34,11 +34,13 @@
       	--><a id="choice-4" class="btn animated no-select shrinkable" href=""></a><!--
       --></div>
       <a id="new-question" class="btn animated no-select" href="">New</a>
+	  <a id="show-options" class="btn animated no-select" href="#config">Options</a>
 	  <div id="overlay-options"><!--
 		--><a id="pen-size" class="btn animated no-select shrinkable" href="">Size</a><!--
 		--><a id="pen-color" class="btn animated no-select shrinkable" href="">Color</a><!--
 	  --></div>
     </div>
+	<form id="options-form" class="animated no-select"></form>
     
     <script type="text/javascript">
 
@@ -49,6 +51,8 @@ onload = function(){
 	});
 	myQuiz.resize();
 	myQuiz.newQuestion();
+
+	myQuiz.setupOptionsForm(fractionQuestion.options);
 
 	window.onresize = function(){
 		myQuiz.resize()	;

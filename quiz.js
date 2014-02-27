@@ -751,7 +751,7 @@ var Quiz = (function(){
 		var that = this;
 		setupForm(document.getElementById('options-form'), options, function (newOptions) {
 			that.uiOptions = newOptions;
-			console.info(that.uiOptions);
+			//console.info(that.uiOptions);
 			window.history.back();
 		},function(){
 			window.history.back();
