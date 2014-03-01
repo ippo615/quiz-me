@@ -279,6 +279,23 @@ var Quiz = (function(){
 		// Overlay stuff
 		this.overlay = null;
 
+		this.newQuestion = function(){
+			quizAsk(this);
+		};		
+
+		this.serialNumber = 0;
+		this.tags = [];
+		this.taggedQuestions = {};
+		this.questions = [];
+
+		// Both of these objects store options
+		this.urlParms = getUrlParms();
+		this.uiOptions = {};
+
+		//this.setupUi();
+	};
+	Quiz.prototype.getDomNodeHandles = function(options){
+		var config = options || {};
 		// HTML node stuff 
 		this.overlayCanvas = getOption(config,'overlayCanvas',document.getElementById('overlay-canvas'));
 		this.genericCanvas = getOption(config,'genericCanvas',document.getElementById('generic-canvas'));
@@ -295,21 +312,6 @@ var Quiz = (function(){
 			document.getElementById('choice-3'),
 			document.getElementById('choice-4')
 		]);
-
-		this.newQuestion = function(){
-			quizAsk(this);
-		};		
-
-		this.serialNumber = 0;
-		this.tags = [];
-		this.taggedQuestions = {};
-		this.questions = [];
-
-		// Both of these objects store options
-		this.urlParms = getUrlParms();
-		this.uiOptions = {};
-
-		this.setupUi();
 	};
 
 	Quiz.prototype.getSerialNumber = function(){
@@ -764,7 +766,30 @@ var Quiz = (function(){
 				hideOptionsForm();
 			}
 		};
-	}
+	};
+
+	Quiz.prototype.createUi = function(node){
+		node.innerHTML = '<div id="question-container" class="no-select"></div>'
+		+'    <canvas id="generic-canvas" class="no-select" width="320" height="320" ></canvas>'
+		+'    <canvas id="overlay-canvas" class="no-select" width="320" height="320" ></canvas>'
+		+'    <div id="btn-container" class="no-select">'
+		+'	  <div id="prompt"></div>'
+		+'      <div id="answer-choices" class="no-select"><!-- I have to comment out whitespace; otherwise it messes up the spacing'
+		+'      	--><a id="choice-1" class="btn animated no-select shrinkable" href=""></a><!--'
+		+'        --><a id="choice-2" class="btn animated no-select shrinkable" href=""></a><!--'
+		+'      	--><a id="choice-3" class="btn animated no-select shrinkable" href=""></a><!--'
+		+'      	--><a id="choice-4" class="btn animated no-select shrinkable" href=""></a><!--'
+		+'      --></div>'
+		+'      <a id="new-question" class="btn animated no-select" href="">New</a>'
+		+'	  <a id="show-options" class="btn animated no-select" href="#config">Options</a>'
+		+'	  <div id="overlay-options"><!--'
+		+'		--><a id="pen-size" class="btn animated no-select shrinkable" href="">Size</a><!--'
+		+'		--><a id="pen-color" class="btn animated no-select shrinkable" href="">Color</a><!--'
+		+'	  --></div>'
+		+'    </div>'
+		+'	<form id="options-form" class="animated no-select"></form>';
+		this.getDomNodeHandles();
+	};
 
 	return Quiz;
 })();
