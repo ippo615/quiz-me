@@ -817,3 +817,64 @@ function getUrlParms(){
 
 	return variables;
 }
+
+function getPageText(title,description,jsSrcUrl,jsObjName){
+return '<!DOCTYPE html>'
++'<html>\n'
++'  <head>\n'
++'  <meta charset="UTF-8">\n'
++'\n'
++'  <title>'+title+'</title>\n'
++'\n'
++'  <meta name="description" content="'+description+'">\n'
++'  <meta name="author" content="Andrew Ippoliti">\n'
++'\n'
++'  <meta name="HandheldFriendly" content="True">\n'
++'  <meta name="MobileOptimized" content="320">\n'
++'  <meta name="viewport" content="width=320, height=320, user-scalable=no" />\n'
++'  <meta name="apple-mobile-web-app-capable" content="yes" />\n'	
++'\n'
++'  <style type="text/css"></style>\n'
++'	<link rel="stylesheet" href="style.css" />\n'
++'	<!--[if IE]>\n'
++'		<script type="text/javascript" src="vendor/excanvas.js"></script>\n'
++'	<![endif]-->\n'
++'	<script type="text/javascript" src="quiz.js"></script>\n'
++'	<script type="text/javascript" src="'+jsSrcUrl+'"></script>\n'
++'  </head>\n'
++'  <body id="global-container" class="no-select">\n'
++'\n'
++'    <script type="text/javascript">\n'
++'\n'
++'//onload = function(){\n'
++'	var myQuiz = new Quiz({\n'
++'		makeQuestion: '+jsObjName+'.any,\n'
++'		options: {}\n'
++'	});\n'
++'	myQuiz.createUi(document.getElementById("global-container"));\n'
++'	myQuiz.setupUi();\n'
++'	myQuiz.setupOptionsForm('+jsObjName+'.options);\n'
++'	window.onresize = function(){\n'
++'		myQuiz.resize()	;\n'
++'	};\n'
++'\n'
++'	// Timeout fixes IE explorer canvas bug and andoid bug\n'
++'	setTimeout( function(){\n'
++'		myQuiz.resize();\n'
++'		myQuiz.newQuestion();\n'
++'}, 50 );\n'
++'\n'
++'//};\n'
++'\n'
++'    </script>\n'
++'\n'
++'  </body>\n'
++'</html>\n';
+}
+
+function loadQuiz(title,description,jsSrcUrl,jsObjName){
+	document.open('text/html');
+	document.write( getPageText(title,description,jsSrcUrl,jsObjName) );
+	document.close();
+}
+

@@ -1,4 +1,4 @@
-var linuxQuestion = (function(){
+var linux = (function(){
 
 	// Source for a lot of the data: http://busybox.net/downloads/BusyBox.html
 	// data also taken from man pages
@@ -349,8 +349,12 @@ var linuxQuestion = (function(){
 	}
 
 	return {
-		any: any,
-		whichCommand: whichCommands
+		questions: {
+			any: any,
+			whichCommand: whichCommands
+		},
+		options: {
+		}
 	};
 
 })();

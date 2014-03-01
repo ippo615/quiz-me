@@ -3,9 +3,9 @@
   <head>
   <meta charset="UTF-8">
 
-  <title>Fractions Quiz</title>
+  <title>{{=name}} Quiz</title>
 
-  <meta name="description" content="Anything Quiz">
+  <meta name="description" content="{{=name}} Quiz">
   <meta name="author" content="Andrew Ippoliti">
 
   <meta name="HandheldFriendly" content="True">
@@ -19,7 +19,7 @@
 		<script type="text/javascript" src="vendor/excanvas.js"></script>
 	<![endif]-->
 	<script type="text/javascript" src="quiz.js"></script>
-	<script type="text/javascript" src="questions/fractions.js"></script>
+	<script type="text/javascript" src="questions/{{=name}}.js"></script>
   </head>
   <body id="global-container" class="no-select">
 
@@ -27,12 +27,12 @@
 
 onload = function(){
 	var myQuiz = new Quiz({
-		makeQuestion: fractionQuestion.any,
+		makeQuestion: {{=name}}.any,
 		options: {}
 	});
 	myQuiz.createUi(document.getElementById('global-container'));
 	myQuiz.setupUi();
-	myQuiz.setupOptionsForm(fractionQuestion.options);
+	myQuiz.setupOptionsForm({{=name}}.options);
 	window.onresize = function(){
 		myQuiz.resize()	;
 	};

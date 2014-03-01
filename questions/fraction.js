@@ -1,4 +1,4 @@
-var fractionQuestion = (function(){
+var fraction = (function(){
 
 	var saved = {
 		d1: 1,
@@ -358,30 +358,32 @@ var fractionQuestion = (function(){
 		}
 	});
 	options.push({
-		name: 'fractionFillColor',
-		type: 'select',
-		config: {
-			default: '#0DF',
-			white: '#FFF',
-			red: '#F00',
-			orange: '#F80',
-			yellow: '#FF0',
-			lime: '#0F0',
-			green: '#080',
-			aqua: '#0FF',
-			blue: '#00F',
-			purple: '#F0F',
-			brown: '#a52a2a',
-			gray: '#888',
-			black: '#000'
+		'name': 'fractionFillColor',
+		'type': 'select',
+		'config': {
+			'default': '#0DF',
+			'white': '#FFF',
+			'red': '#F00',
+			'orange': '#F80',
+			'yellow': '#FF0',
+			'lime': '#0F0',
+			'green': '#080',
+			'aqua': '#0FF',
+			'blue': '#00F',
+			'purple': '#F0F',
+			'brown': '#a52a2a',
+			'gray': '#888',
+			'black': '#000'
 		}
 	});
 
 	return {
-		simplePic:simplePic,
-		simpleAdd:simpleAdd,
-		simpleSub:simpleSub,
-		any: any,
+		questions: {
+			simplePic:simplePic,
+			simpleAdd:simpleAdd,
+			simpleSub:simpleSub,
+			any: any
+		},
 		options: options
 	};
 

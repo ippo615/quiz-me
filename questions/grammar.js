@@ -77,7 +77,11 @@ var grammar = (function(){
 	}
 
 	return {
-		any: any
+		questions: {
+			any: any
+		},
+		options: {
+		}
 	};
 
 })();

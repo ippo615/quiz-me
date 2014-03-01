@@ -3,9 +3,9 @@
   <head>
   <meta charset="UTF-8">
 
-  <title>Fractions Quiz</title>
+  <title>{{=name}} Quiz</title>
 
-  <meta name="description" content="Anything Quiz">
+  <meta name="description" content="{{=name}} Quiz">
   <meta name="author" content="Andrew Ippoliti">
 
   <meta name="HandheldFriendly" content="True">
@@ -19,30 +19,14 @@
 		<script type="text/javascript" src="vendor/excanvas.js"></script>
 	<![endif]-->
 	<script type="text/javascript" src="quiz.js"></script>
-	<script type="text/javascript" src="questions/fractions.js"></script>
+	<script type="text/javascript" src="questions/{{=name}}.js"></script>
   </head>
   <body id="global-container" class="no-select">
 
     <script type="text/javascript">
 
 onload = function(){
-	var myQuiz = new Quiz({
-		makeQuestion: fractionQuestion.any,
-		options: {}
-	});
-	myQuiz.createUi(document.getElementById('global-container'));
-	myQuiz.setupUi();
-	myQuiz.setupOptionsForm(fractionQuestion.options);
-	window.onresize = function(){
-		myQuiz.resize()	;
-	};
-
-	// Timeout fixes IE explorer canvas bug and andoid bug
-	setTimeout( function(){
-		myQuiz.resize();
-		myQuiz.newQuestion();
-	}, 50 );
-
+	loadQuiz('Fractions','A fraction practice quiz','questions/fractions.js','fractionQuestion');
 };
 
     </script>

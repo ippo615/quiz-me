@@ -1,4 +1,4 @@
-var presidentialQuestion = (function(){
+var us_president = (function(){
 	var csvPresidentalData = "index,ordinal,name,state,occupation\n"
 	+"1,1st,George Washington,Virginia,Planter and land surveyor\n"
 	+"2,2nd,John Adams,Massachusetts,Lawyer\n"
@@ -116,6 +116,12 @@ var presidentialQuestion = (function(){
 		quiz.questionText('Who was the '+president.ordinal+' president of the United States?');
 	};
 
-	return nthPresident;
+	return {
+		questions: {
+			any:nthPresident
+		},
+		options: {
+		}
+	};
 
 })();

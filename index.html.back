@@ -127,61 +127,83 @@
 
   </head>
   <body id="global-container" class="no-select rainbow clearfix">
-<a class="app-link" href="quiz/basic-math.html">
-		<div class="app-title">basic math</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="basic-math-icon"></div>
+
+	<a class="app-link" href="addition.html">
+		<div class="app-title">Addition</div>
+		<div class="app-description animated">Practice adding numbers between 0 and 999</div>
+        <div class="app-icon" id="addition-icon">+</div>
 	</a>
-<a class="app-link" href="quiz/clock.html">
-		<div class="app-title">clock</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="clock-icon"></div>
+	<a class="app-link" href="subtraction.html">
+		<div class="app-title">Subtraction</div>
+		<div class="app-description animated">Practice subtraction numbers between 999 and 0</div>
+        <div class="app-icon" id="subtraction-icon">-</div>
 	</a>
-<a class="app-link" href="quiz/fraction.html">
-		<div class="app-title">fraction</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="fraction-icon"></div>
+	<a class="app-link" href="multiplication.html">
+		<div class="app-title">Multiplication</div>
+		<div class="app-description animated">Practice multiplying numbers between 1 and 12</div>
+        <div class="app-icon" id="multiplication-icon">&times;</div>
 	</a>
-<a class="app-link" href="quiz/grammar.html">
-		<div class="app-title">grammar</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="grammar-icon"></div>
+    <a class="app-link" href="division.html">
+		<div class="app-title">Division</div>
+		<div class="app-description animated">Practice dividing numbers</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/graph.html">
-		<div class="app-title">graph</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="graph-icon"></div>
+    <a class="app-link" href="clock.html">
+		<div class="app-title">Clock (analog)</div>
+		<div class="app-description animated">Learn how to tell time with an analog clock</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/linux.html">
-		<div class="app-title">linux</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="linux-icon"></div>
+    <a class="app-link" href="fractions.html">
+		<div class="app-title">Fractions</div>
+		<div class="app-description animated">Learn how to work with fractions</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/math-word-problem.html">
-		<div class="app-title">math word problem</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="math-word-problem-icon"></div>
+    <a class="app-link" href="perimeter.html">
+		<div class="app-title">Perimeter</div>
+		<div class="app-description animated">Find the perimeter of simple shapes</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/perimeter.html">
-		<div class="app-title">perimeter</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="perimeter-icon"></div>
+    <a class="app-link" href="polynomial.html">
+		<div class="app-title">Polynomial</div>
+		<div class="app-description animated">Practice adding, subtracting, multiplying and factoring polynomials</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/periodic-table.html">
-		<div class="app-title">periodic table</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="periodic-table-icon"></div>
+    <a class="app-link" href="graph.html">
+		<div class="app-title">Graph</div>
+		<div class="app-description animated">Practice graphing functions</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/polynomial.html">
-		<div class="app-title">polynomial</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="polynomial-icon"></div>
+	<a class="app-link" href="math-word-problems.html">
+		<div class="app-title">Word Problems</div>
+		<div class="app-description animated">Practice reading and math skills</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
-<a class="app-link" href="quiz/us-president.html">
-		<div class="app-title">us president</div>
-		<div class="app-description animated">...</div>
-        <div class="app-icon" id="us-president-icon"></div>
+	<a class="app-link" href="grammar.html">
+		<div class="app-title">Grammar</div>
+		<div class="app-description animated">Practice grammar skills</div>
+		<div class="app-icon" id="addition-icon"></div>
 	</a>
+    <a class="app-link" href="presidents.html">
+		<div class="app-title">Presidents</div>
+		<div class="app-description animated">Learn about the presidents of the USA</div>
+		<div class="app-icon" id="addition-icon"></div>
+	</a>
+    <a class="app-link" href="periodic-table.html">
+		<div class="app-title">Periodic Table</div>
+		<div class="app-description animated">Learn about the periodic table of elements</div>
+		<div class="app-icon" id="addition-icon"></div>
+	</a>
+    <a class="app-link" href="linux.html">
+		<div class="app-title">Linux</div>
+		<div class="app-description animated">Learn about the Linux operating system</div>
+		<div class="app-icon" id="addition-icon"></div>
+	</a>
+    <a class="app-link" href="anything.html">
+		<div class="app-title">Anything</div>
+		<div class="app-description animated">Answer questions from all topics</div>
+		<div class="app-icon" id="addition-icon"></div>
+	</a>
+    
     <script type="text/javascript">
 function findScale(xSize, ySize, xGoal, yGoal) {
     // We'll either to match `xSize` to `xGoal` or `ySize` to `yGoal` so
@@ -211,3 +233,4 @@ onload = function(){
     </script>
   </body>
 </html>
+

@@ -1,4 +1,4 @@
-var clockQuestion = (function(){
+var clock = (function(){
     // draws the face of the clock without the hands
 	// need to add parameter for passing in a canvas 2d context
 	// perhaps color as well
@@ -221,5 +221,11 @@ var clockQuestion = (function(){
 		animateToNewTime(newTime,5000,quiz,quiz.doNothing);
 	}
 
-	return clockQuestion;
+	return {
+		questions: {
+			any: clockQuestion
+		},
+		options: {
+		}
+	};
 })();

@@ -1,4 +1,4 @@
-var mathQuestions = (function(){
+var basic_math = (function(){
 
 	function shuffle(things) {
 		var nThings = things.length;
@@ -130,10 +130,14 @@ var mathQuestions = (function(){
 	}
 
 	return {
-		addition: additionQuestion,
-		subtraction: subtractionQuestion,
-		multiplication: multiplicationQuestion,
-		division: divisionQuestion,
-		any: anyQuestion
+		questions: {
+			addition: additionQuestion,
+			subtraction: subtractionQuestion,
+			multiplication: multiplicationQuestion,
+			division: divisionQuestion,
+			any: anyQuestion
+		},
+		options: {
+		}
 	};
 })();

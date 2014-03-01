@@ -1,4 +1,4 @@
-var periodicTableQuestion = (function(){
+var periodic_table = (function(){
 	
 	// Periodic Table Data taken from Wikipedia http://en.wikipedia.org/wiki/Periodic_table
 	// Available with the following license: http://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License
@@ -354,56 +354,59 @@ var periodicTableQuestion = (function(){
 	var any = combineQuestions( [simple, trends] );
 
 	return {
+		questions: {
+			lessMass:lessMass,
+			moreMass:moreMass,
+			mass: combineQuestions([lessMass,moreMass]),
 
-		lessMass:lessMass,
-		moreMass:moreMass,
-		mass: combineQuestions([lessMass,moreMass]),
+			lessRadius:lessRadius,
+			moreRadius:moreRadius,
+			radius: combineQuestions([lessRadius,moreRadius]),
 
-		lessRadius:lessRadius,
-		moreRadius:moreRadius,
-		radius: combineQuestions([lessRadius,moreRadius]),
+			lessAtomicNumber:lessAtomicNumber,
+			moreAtomicNumber:moreAtomicNumber,
+			atomicNumber: combineQuestions([lessAtomicNumber,moreAtomicNumber]),
 
-		lessAtomicNumber:lessAtomicNumber,
-		moreAtomicNumber:moreAtomicNumber,
-		atomicNumber: combineQuestions([lessAtomicNumber,moreAtomicNumber]),
+			lessElectroNegativity:lessElectroNegativity,
+			moreElectroNegativity:moreElectroNegativity,
+			electroNegativity: combineQuestions([lessElectroNegativity,moreElectroNegativity]),
 
-		lessElectroNegativity:lessElectroNegativity,
-		moreElectroNegativity:moreElectroNegativity,
-		electroNegativity: combineQuestions([lessElectroNegativity,moreElectroNegativity]),
+			lessIonizationEnergy:lessIonizationEnergy,
+			moreIonizationEnergy:moreIonizationEnergy,
+			ionizationEnergy: combineQuestions([lessIonizationEnergy,moreIonizationEnergy]),
 
-		lessIonizationEnergy:lessIonizationEnergy,
-		moreIonizationEnergy:moreIonizationEnergy,
-		ionizationEnergy: combineQuestions([lessIonizationEnergy,moreIonizationEnergy]),
+			lessDensity:lessDensity,
+			moreDensity:moreDensity,
+			density: combineQuestions([lessDensity,moreDensity]),
 
-		lessDensity:lessDensity,
-		moreDensity:moreDensity,
-		density: combineQuestions([lessDensity,moreDensity]),
+			lessMeltingPoint:lessMeltingPoint,
+			moreMeltingPoint:moreMeltingPoint,
+			meltingPoint: combineQuestions([lessMeltingPoint,moreMeltingPoint]),
 
-		lessMeltingPoint:lessMeltingPoint,
-		moreMeltingPoint:moreMeltingPoint,
-		meltingPoint: combineQuestions([lessMeltingPoint,moreMeltingPoint]),
+			lessBoilingPoint:lessBoilingPoint,
+			moreBoilingPoint:moreBoilingPoint,
+			boilingPoint: combineQuestions([lessBoilingPoint,moreBoilingPoint]),
 
-		lessBoilingPoint:lessBoilingPoint,
-		moreBoilingPoint:moreBoilingPoint,
-		boilingPoint: combineQuestions([lessBoilingPoint,moreBoilingPoint]),
+			lessSpecificHeat:lessSpecificHeat,
+			moreSpecificHeat:moreSpecificHeat,
+			specificHeat: combineQuestions([lessSpecificHeat,moreSpecificHeat]),
 
-		lessSpecificHeat:lessSpecificHeat,
-		moreSpecificHeat:moreSpecificHeat,
-		specificHeat: combineQuestions([lessSpecificHeat,moreSpecificHeat]),
+			lessAbudance:lessAbudance,
+			moreAbudance:moreAbudance,
+			abudance: combineQuestions([lessAbudance,moreAbudance]),
 
-		lessAbudance:lessAbudance,
-		moreAbudance:moreAbudance,
-		abudance: combineQuestions([lessAbudance,moreAbudance]),
+			etimology:etimology,
+			group:group,
+			period:period,
+			atomicNumber:atomicNumber,
+			symbol:symbol,
 
-		etimology:etimology,
-		group:group,
-		period:period,
-		atomicNumber:atomicNumber,
-		symbol:symbol,
-
-		simple: simple,
-		trends: trends,
-		any: any
+			simple: simple,
+			trends: trends,
+			any: any
+		},
+		options: {
+		}
 	};
 
 })();

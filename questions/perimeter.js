@@ -1,4 +1,9 @@
-var perimeterQuestion = (function(){
+var perimeter = (function(){
+
+	var formatToInteger = function (x) {
+		return x.toFixed(0);
+	};
+
 	// -------------------------------------------------------- [ Shape Drawing ] -
 	function drawLineWithGap(context, pt1, pt2, fontSize, maxLabelWidth) {
 		var dx, dy, mx, my, l, ndx, ndy, gap;
@@ -499,6 +504,12 @@ var perimeterQuestion = (function(){
 		animateToNewPoly(poly, 2000, null);
 	}
 
-	return perimeterQuestion;
+	return {
+		questions: {
+			any: perimeterQuestion
+		},
+		options: {
+		}
+	};
 
 })();

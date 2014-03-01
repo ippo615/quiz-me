@@ -1,4 +1,4 @@
-var graphQuestion = (function(){
+var graph = (function(){
 
 	var polynomial = [];
 
@@ -260,10 +260,14 @@ var graphQuestion = (function(){
 	}
 
 	return {
-		any: any,
-		constant: constant,
-		linear: linear,
-		quadratic: quadratic,
-		power: power
+		questions: {
+			any: any,
+			constant: constant,
+			linear: linear,
+			quadratic: quadratic,
+			power: power
+		},
+		options: {
+		}
 	};
 })();

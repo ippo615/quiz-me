@@ -1,4 +1,4 @@
-var polynomialQuestion = (function(){
+var polynomial = (function(){
 
 	var polynomial = [];
 
@@ -249,10 +249,14 @@ var polynomialQuestion = (function(){
 	}
 
 	return {
-		any: any,
-		add: addQuestion,
-		sub: subQuestion,
-		mul: mulQuestion,
-		factor: factorQuestion
+		questions: {
+			any: any,
+			add: addQuestion,
+			sub: subQuestion,
+			mul: mulQuestion,
+			factor: factorQuestion
+		},
+		options: {
+		}
 	};
 })();
