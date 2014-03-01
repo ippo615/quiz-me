@@ -1,4 +1,4 @@
-var perimeter = (function(){
+var perimeter = (function () {
 
 	var formatToInteger = function (x) {
 		return x.toFixed(0);
@@ -16,14 +16,14 @@ var perimeter = (function(){
 		ndy = dy / l;
 		gap = Math.abs(ndx * maxLabelWidth);
 		if (gap < 1.5 * fontSize) {
-		    gap = 1.5 * fontSize;
+			gap = 1.5 * fontSize;
 		}
 		if (gap < l) {
-		    context.lineTo(pt1.x + ndx * 0.5 * (l - gap), pt1.y + ndy * 0.5 * (l - gap));
-		    context.moveTo(pt1.x + ndx * 0.5 * (l - gap) + ndx * gap, pt1.y + ndy * 0.5 * (l - gap) + ndy * gap);
-		    context.lineTo(pt2.x, pt2.y);
+			context.lineTo(pt1.x + ndx * 0.5 * (l - gap), pt1.y + ndy * 0.5 * (l - gap));
+			context.moveTo(pt1.x + ndx * 0.5 * (l - gap) + ndx * gap, pt1.y + ndy * 0.5 * (l - gap) + ndy * gap);
+			context.lineTo(pt2.x, pt2.y);
 		} else {
-		    context.moveTo(pt2.x, pt2.y);
+			context.moveTo(pt2.x, pt2.y);
 		}
 	}
 
@@ -35,7 +35,7 @@ var perimeter = (function(){
 		dy = pt2.y - pt1.y;
 		l = Math.sqrt(dx * dx + dy * dy);
 		if (l > 0.5) {
-		    context.fillText(formatNumber(l), mx, my * 1.01);
+			context.fillText(formatNumber(l), mx, my * 1.01);
 		}
 	}
 
@@ -59,7 +59,7 @@ var perimeter = (function(){
 		context.moveTo(points[0].x, points[0].y);
 		var i, nPoints = points.length;
 		for (i = 1; i < nPoints; i += 1) {
-		    context.lineTo(points[i].x, points[i].y);
+			context.lineTo(points[i].x, points[i].y);
 		}
 		context.closePath();
 		context.fill();
@@ -71,7 +71,7 @@ var perimeter = (function(){
 		context.moveTo(points[0].x, points[0].y);
 		nPoints = points.length;
 		for (i = 1; i < nPoints; i += 1) {
-		    drawLineWithGap(context, points[i - 1], points[i], fontSize, maxLabelWidth);
+			drawLineWithGap(context, points[i - 1], points[i], fontSize, maxLabelWidth);
 		}
 		drawLineWithGap(context, points[nPoints - 1], points[0], fontSize, maxLabelWidth);
 		context.closePath();
@@ -79,14 +79,14 @@ var perimeter = (function(){
 
 		// Draw the length labels
 		var format = function (x) {
-		    return x.toFixed(0);
+			return x.toFixed(0);
 		};
 		context.font = fontSize + 'px mono';
 		context.fillStyle = '#000';
 		context.textAlign = 'center';
 		context.textBaseline = 'middle';
 		for (i = 1; i < nPoints; i += 1) {
-		    drawLengthLabel(context, points[i - 1], points[i], format);
+			drawLengthLabel(context, points[i - 1], points[i], format);
 		}
 		drawLengthLabel(context, points[nPoints - 1], points[0], format);
 
@@ -99,50 +99,50 @@ var perimeter = (function(){
 		var duration = 0;
 		var onDoneAction = null;
 		var requestAnimFrame = window.requestAnimationFrame ||
-		    window.webkitRequestAnimationFrame ||
-		    window.mozRequestAnimationFrame ||
-		    window.oRequestAnimationFrame ||
-		    window.msRequestAnimationFrame ||
-		        function ( /* function */ callback /*, DOMElement element */ ) {
-		            window.setTimeout(function () {
-		                callback();
-		            }, 16);
-		    };
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.oRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
+				function ( /* function */ callback /*, DOMElement element */ ) {
+					window.setTimeout(function () {
+						callback();
+					}, 16);
+			};
 
 		var runAmin = function (timeStamp) {
-		    //timeStamp = timeStamp || (new Date()).getTime();
-		    timeStamp = (new Date()).getTime();
-		    var dt = timeStamp - startTime;
-		    var percent = 0.5 - (Math.cos(dt / duration * (Math.PI)) / 2);
+			//timeStamp = timeStamp || (new Date()).getTime();
+			timeStamp = (new Date()).getTime();
+			var dt = timeStamp - startTime;
+			var percent = 0.5 - (Math.cos(dt / duration * (Math.PI)) / 2);
 
-		    var i, nPoints = polyStart.length;
+			var i, nPoints = polyStart.length;
 
-		    if (dt < duration) {
-		        for (i = 0; i < nPoints; i += 1) {
-		            polygon[i].x = polyStart[i].x + (polyEnd[i].x - polyStart[i].x) * percent;
-		            polygon[i].y = polyStart[i].y + (polyEnd[i].y - polyStart[i].y) * percent;
-		        }
-		        drawThing(polygon, savedQuiz);
-		        requestAnimFrame(runAmin);
-		    } else {
-		        for (i = 0; i < nPoints; i += 1) {
-		            polygon[i].x = polyEnd[i].x;
-		            polygon[i].y = polyEnd[i].y;
-		        }
-		        drawThing(polygon, savedQuiz);
-		        if (onDoneAction) {
-		            onDoneAction();
-		        }
-		    }
+			if (dt < duration) {
+				for (i = 0; i < nPoints; i += 1) {
+					polygon[i].x = polyStart[i].x + (polyEnd[i].x - polyStart[i].x) * percent;
+					polygon[i].y = polyStart[i].y + (polyEnd[i].y - polyStart[i].y) * percent;
+				}
+				drawThing(polygon, savedQuiz);
+				requestAnimFrame(runAmin);
+			} else {
+				for (i = 0; i < nPoints; i += 1) {
+					polygon[i].x = polyEnd[i].x;
+					polygon[i].y = polyEnd[i].y;
+				}
+				drawThing(polygon, savedQuiz);
+				if (onDoneAction) {
+					onDoneAction();
+				}
+			}
 		};
 
 		return function (start, end, ms, onDone) {
-		    requestAnimFrame(runAmin);
-		    polyStart = start;
-		    polyEnd = end;
-		    duration = ms;
-		    startTime = (new Date()).getTime();
-		    onDoneAction = onDone;
+			requestAnimFrame(runAmin);
+			polyStart = start;
+			polyEnd = end;
+			duration = ms;
+			startTime = (new Date()).getTime();
+			onDoneAction = onDone;
 		};
 	})();
 
@@ -151,10 +151,10 @@ var perimeter = (function(){
 	function getRandomPoly(nPoints) {
 		var i, poly = [];
 		for (i = 0; i < nPoints; i += 1) {
-		    poly.push({
-		        x: Math.floor(Math.random() * 240),
-		        y: Math.floor(Math.random() * 240)
-		    });
+			poly.push({
+				x: Math.floor(Math.random() * 240),
+				y: Math.floor(Math.random() * 240)
+			});
 		}
 		return poly;
 	}
@@ -168,26 +168,26 @@ var perimeter = (function(){
 		var yMin = 9e99;
 		var i, nPts = poly.length;
 		for (i = 0; i < nPts; i += 1) {
-		    if (poly[i].x > xMax) {
-		        xMax = poly[i].x;
-		    }
-		    if (poly[i].x < xMin) {
-		        xMin = poly[i].x;
-		    }
-		    if (poly[i].y > yMax) {
-		        yMax = poly[i].y;
-		    }
-		    if (poly[i].y < yMin) {
-		        yMin = poly[i].y;
-		    }
+			if (poly[i].x > xMax) {
+				xMax = poly[i].x;
+			}
+			if (poly[i].x < xMin) {
+				xMin = poly[i].x;
+			}
+			if (poly[i].y > yMax) {
+				yMax = poly[i].y;
+			}
+			if (poly[i].y < yMin) {
+				yMin = poly[i].y;
+			}
 		}
 		xMid = 0.5 * (xMax + xMin);
 		yMid = 0.5 * (yMax + yMin);
 		var dx = x - xMid;
 		var dy = y - yMid;
 		for (i = 0; i < nPts; i += 1) {
-		    poly[i].x += dx;
-		    poly[i].y += dy;
+			poly[i].x += dx;
+			poly[i].y += dy;
 		}
 		return poly;
 	}
@@ -196,16 +196,16 @@ var perimeter = (function(){
 		var i, nPts = poly.length;
 		var lastPoint = poly[nPts - 1];
 		if (totalPoints < nPts) {
-		    while (totalPoints > poly.length) {
-		        poly.pop();
-		    }
+			while (totalPoints > poly.length) {
+				poly.pop();
+			}
 		} else {
-		    for (i = nPts; i < totalPoints; i += 1) {
-		        poly.push({
-		            x: lastPoint.x,
-		            y: lastPoint.y
-		        });
-		    }
+			for (i = nPts; i < totalPoints; i += 1) {
+				poly.push({
+					x: lastPoint.x,
+					y: lastPoint.y
+				});
+			}
 		}
 		return poly;
 	}
@@ -220,17 +220,17 @@ var perimeter = (function(){
 		var xSize = xMin + Math.random() * xRange;
 		var ySize = yMin + Math.random() * yRange;
 		return [{
-		    x: 0,
-		    y: 0
+			x: 0,
+			y: 0
 		}, {
-		    x: xSize,
-		    y: 0
+			x: xSize,
+			y: 0
 		}, {
-		    x: xSize,
-		    y: ySize
+			x: xSize,
+			y: ySize
 		}, {
-		    x: 0,
-		    y: ySize
+			x: 0,
+			y: ySize
 		}];
 	}
 
@@ -245,17 +245,17 @@ var perimeter = (function(){
 		var xSize = xMin + Math.random() * xRange;
 		var ySize = yMin + Math.random() * yRange;
 		return [{
-		    x: xOffset,
-		    y: 0
+			x: xOffset,
+			y: 0
 		}, {
-		    x: xOffset + xSize,
-		    y: 0
+			x: xOffset + xSize,
+			y: 0
 		}, {
-		    x: xSize,
-		    y: ySize
+			x: xSize,
+			y: ySize
 		}, {
-		    x: 0,
-		    y: ySize
+			x: 0,
+			y: ySize
 		}];
 	}
 
@@ -270,17 +270,17 @@ var perimeter = (function(){
 		var sizeRange = 0.5 * xRange + yRange;
 		var size = sizeMin + Math.random() * sizeRange;
 		return [{
-		    x: 0,
-		    y: 0
+			x: 0,
+			y: 0
 		}, {
-		    x: size,
-		    y: 0
+			x: size,
+			y: 0
 		}, {
-		    x: size,
-		    y: size
+			x: size,
+			y: size
 		}, {
-		    x: 0,
-		    y: size
+			x: 0,
+			y: size
 		}];
 	}
 
@@ -296,17 +296,17 @@ var perimeter = (function(){
 		var baseMid = 0.5 * (base1 + base2);
 		var height = yMin + Math.random() * yRange;
 		return [{
-		    x: baseMid - 0.5 * base1,
-		    y: 0
+			x: baseMid - 0.5 * base1,
+			y: 0
 		}, {
-		    x: baseMid + 0.5 * base1,
-		    y: 0
+			x: baseMid + 0.5 * base1,
+			y: 0
 		}, {
-		    x: baseMid + 0.5 * base2,
-		    y: height
+			x: baseMid + 0.5 * base2,
+			y: height
 		}, {
-		    x: baseMid - 0.5 * base2,
-		    y: height
+			x: baseMid - 0.5 * base2,
+			y: height
 		}];
 	}
 
@@ -322,17 +322,17 @@ var perimeter = (function(){
 		var baseMid = 0.5 * (base1 + base2);
 		var height = yMin + Math.random() * yRange;
 		return [{
-		    x: baseMid - 0.5 * base1,
-		    y: 0
+			x: baseMid - 0.5 * base1,
+			y: 0
 		}, {
-		    x: baseMid + 0.5 * base1,
-		    y: 0
+			x: baseMid + 0.5 * base1,
+			y: 0
 		}, {
-		    x: baseMid + 0.5 * base2,
-		    y: height
+			x: baseMid + 0.5 * base2,
+			y: height
 		}, {
-		    x: baseMid - 0.5 * base2,
-		    y: height
+			x: baseMid - 0.5 * base2,
+			y: height
 		}];
 	}
 
@@ -348,21 +348,21 @@ var perimeter = (function(){
 		var baseMid = 0.5 * (base1 + base2);
 		var height = yMin + Math.random() * yRange;
 		return [{
-		    x: baseMid - 0.5 * base1,
-		    y: 0
+			x: baseMid - 0.5 * base1,
+			y: 0
 		}, {
-		    x: baseMid + 0.5 * base1,
-		    y: 0
+			x: baseMid + 0.5 * base1,
+			y: 0
 		}, {
-		    x: baseMid + 0.5 * base2,
-		    y: height
+			x: baseMid + 0.5 * base2,
+			y: height
 		}, {
-		    x: baseMid - 0.5 * base2,
-		    y: height
+			x: baseMid - 0.5 * base2,
+			y: height
 		}];
 	}
 
-	function makeRegularPolygon(radius,sides,angle,quiz) {
+	function makeRegularPolygon(radius, sides, angle, quiz) {
 		//var radius = quiz.getOption('radius', 50);
 		//var sides = quiz.getOption('sides', 5);
 		//var angle = quiz.getOption('angle', 0);
@@ -371,10 +371,10 @@ var perimeter = (function(){
 		var y = quiz.getOption('y', 50);
 		var i, poly = [];
 		for (i = 0; i < sides; i += 1) {
-		    poly.push({
-		        x: x + radius * Math.cos(radOffset + 2 * Math.PI * i / sides),
-		        y: y + radius * Math.sin(radOffset + 2 * Math.PI * i / sides)
-		    });
+			poly.push({
+				x: x + radius * Math.cos(radOffset + 2 * Math.PI * i / sides),
+				y: y + radius * Math.sin(radOffset + 2 * Math.PI * i / sides)
+			});
 		}
 		return poly;
 	}
@@ -400,13 +400,13 @@ var perimeter = (function(){
 
 	function getRandomShape(quiz) {
 		var shapes = [
-		    square,
-		    rectangle,
-		    trapazoid,
-		    parallelogram,
-		    triangleDown,
-		    triangleUp,
-		    regularPolygon
+			square,
+			rectangle,
+			trapazoid,
+			parallelogram,
+			triangleDown,
+			triangleUp,
+			regularPolygon
 		];
 		var sides = quiz.getOption('sides', 20);
 		var xCenter = quiz.getOption('x', 120);
@@ -427,7 +427,7 @@ var perimeter = (function(){
 		var total = 0;
 		var i, l = pts.length;
 		for (i = 1; i < l; i += 1) {
-		    total += computeCrossProduct(pts[i - 1], pts[i]);
+			total += computeCrossProduct(pts[i - 1], pts[i]);
 		}
 		total += computeCrossProduct(pts[pts.length - 1], pts[0]);
 		return Math.abs(total * 0.5);
@@ -444,39 +444,39 @@ var perimeter = (function(){
 		var total = 0;
 		var i, l = pts.length;
 		for (i = 1; i < l; i += 1) {
-		    if (formatNumber) {
-		        total += parseFloat(formatNumber(computeLength(pts[i - 1], pts[i])));
-		    } else {
-		        total += computeLength(pts[i - 1], pts[i]);
-		    }
+			if (formatNumber) {
+				total += parseFloat(formatNumber(computeLength(pts[i - 1], pts[i])));
+			} else {
+				total += computeLength(pts[i - 1], pts[i]);
+			}
 		}
 		if (formatNumber) {
-		    total += parseFloat(formatNumber(computeLength(pts[pts.length - 1], pts[0])));
+			total += parseFloat(formatNumber(computeLength(pts[pts.length - 1], pts[0])));
 		} else {
-		    total += computeLength(pts[pts.length - 1], pts[0]);
+			total += computeLength(pts[pts.length - 1], pts[0]);
 		}
 		return total;
 	}
 
 	var polygon = [];
 	var i, maxSides = 20;
-	for( i=0; i<maxSides; i+=1 ){
+	for (i = 0; i < maxSides; i += 1) {
 		polygon.push({
-		    x: 0,
-		    y: 0
+			x: 0,
+			y: 0
 		});
 	}
 
-	var globalScale = 1;
 	function animateToNewPoly(newPoly, duration, onDone) {
 		animatePolygonTransition(polygon, newPoly, duration, onDone);
 	}
 
-	function redraw(){
+	function redraw() {
 		drawThing(polygon, savedQuiz);
 	}
 
 	var savedQuiz = {};
+
 	function perimeterQuestion(quiz) {
 		savedQuiz = quiz;
 
@@ -484,21 +484,21 @@ var perimeter = (function(){
 		var poly = getRandomShape(quiz);
 		var answer = computePerimeter(poly, quiz);
 		var answers = [
-		    formatNumber(answer),
-		    formatNumber(answer * 1.01+1),
-		    formatNumber(answer * 0.99-1),
-		    formatNumber(answer * Math.random())
+			formatNumber(answer),
+			formatNumber(answer * 1.01 + 1),
+			formatNumber(answer * 0.99 - 1),
+			formatNumber(answer * Math.random())
 		];
 		answer = formatNumber(answer);
-		answers = shuffle(answers);
+		answers = quiz.shuffle(answers);
 
 		quiz.onResize = redraw;
 
-		quiz.choiceSet(1,answers[0], answer===answers[0]);
-		quiz.choiceSet(2,answers[1], answer===answers[1]);
-		quiz.choiceSet(3,answers[2], answer===answers[2]);
-		quiz.choiceSet(4,answers[3], answer===answers[3]);
-		quiz.questionNumbers( '','' );
+		quiz.choiceSet(1, answers[0], answer === answers[0]);
+		quiz.choiceSet(2, answers[1], answer === answers[1]);
+		quiz.choiceSet(3, answers[2], answer === answers[2]);
+		quiz.choiceSet(4, answers[3], answer === answers[3]);
+		quiz.questionNumbers('', '');
 		quiz.questionPrompt('Perimeter?');
 
 		animateToNewPoly(poly, 2000, null);
@@ -508,8 +508,7 @@ var perimeter = (function(){
 		questions: {
 			any: perimeterQuestion
 		},
-		options: {
-		}
+		options: {}
 	};
 
 })();
