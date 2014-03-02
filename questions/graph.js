@@ -205,8 +205,12 @@ var graph = (function () {
 		saved.poly = poly;
 		saved.quiz = quiz;
 		var answer = 'y=' + polyToEquation(poly, 'x');
-		quiz.askQuestion(quiz, '', answer, choices);
-		quiz.onResize = redraw;
+		quiz.askQuestion({
+			question: '',
+			answer: answer,
+			choices: choices,
+			redraw: redraw
+		});
 	}
 
 	function randomPolynomial(order, quiz) {

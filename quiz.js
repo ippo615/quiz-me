@@ -350,7 +350,13 @@ var Quiz = (function(){
 		this.resize();
 	};
 
-	Quiz.prototype.askQuestion = function(quiz,question,answer,choices){
+	//Quiz.prototype.askQuestion = function(quiz,question,answer,choices){
+	Quiz.prototype.askQuestion = function(config){
+		var quiz = this;
+		var answer = config.answer;
+		var choices = config.choices;
+		var type = config.type || '';
+		var onRedraw = config.redraw || quiz.doNothing;
 
 		// Remove the correct answer from the choices if it is there
 		var i,l=choices.length;
@@ -364,12 +370,17 @@ var Quiz = (function(){
 		answers = quiz.shuffle( answers );
 
 		// Setup the UI stuff
+		quiz.questionPrompt( config.prompt || '' );
 		quiz.choiceSet(1,answers[0], answer===answers[0]);
 		quiz.choiceSet(2,answers[1], answer===answers[1]);
 		quiz.choiceSet(3,answers[2], answer===answers[2]);
 		quiz.choiceSet(4,answers[3], answer===answers[3]);		
-		quiz.questionLongText( question );
-		quiz.onResize = quiz.doNothing;
+		if( type === '' || type === 'text' ){
+			quiz.questionLongText( config.question );
+		}else if( type === 'number' ){
+			quiz.questionNumbers( config.n1, config.n2 );
+		}
+		quiz.onResize = onRedraw;
 	};
 
 	Quiz.prototype.choiceHide = function(index){

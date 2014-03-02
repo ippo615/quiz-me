@@ -163,7 +163,11 @@ var polynomial = (function () {
 			polyToEquation(randomPolynomial(choiceOrder, quiz), polySymbol),
 			polyToEquation(randomPolynomial(choiceOrder, quiz), polySymbol)
 		];
-		quiz.askQuestion(quiz, 'Multiply ' + polyToEquation(p1, polySymbol) + ' with ' + polyToEquation(p2, polySymbol), answer, choices);
+		quiz.askQuestion({
+			question:'Multiply ' + polyToEquation(p1, polySymbol) + ' with ' + polyToEquation(p2, polySymbol),
+			answer:answer,
+			choices:choices
+		});
 	}
 
 	function addQuestion(quiz) {
@@ -189,7 +193,11 @@ var polynomial = (function () {
 			polyToEquation(randomPolynomial(choiceOrder, quiz), polySymbol),
 			polyToEquation(randomPolynomial(choiceOrder, quiz), polySymbol)
 		];
-		quiz.askQuestion(quiz, 'Add ' + polyToEquation(p1, polySymbol) + ' and ' + polyToEquation(p2, polySymbol), answer, choices);
+		quiz.askQuestion({
+			question:'Add ' + polyToEquation(p1, polySymbol) + ' and ' + polyToEquation(p2, polySymbol),
+			answer:answer,
+			choices:choices
+		});
 	}
 
 	function subQuestion(quiz) {
@@ -215,7 +223,11 @@ var polynomial = (function () {
 			polyToEquation(randomPolynomial(choiceOrder, quiz), polySymbol),
 			polyToEquation(randomPolynomial(choiceOrder, quiz), polySymbol)
 		];
-		quiz.askQuestion(quiz, 'Subtract ' + polyToEquation(p2, polySymbol) + ' from ' + polyToEquation(p1, polySymbol), answer, choices);
+		quiz.askQuestion({
+			question:'Subtract ' + polyToEquation(p2, polySymbol) + ' from ' + polyToEquation(p1, polySymbol),
+			answer: answer,
+			choices: choices
+		});
 	}
 
 	function factorQuestion(quiz) {
@@ -242,7 +254,11 @@ var polynomial = (function () {
 			'(' + polyToEquation(randomPolynomial(order, quiz), polySymbol) + ')(' + polyToEquation(randomPolynomial(order, quiz), polySymbol) + ')',
 			'(' + polyToEquation(randomPolynomial(order, quiz), polySymbol) + ')(' + polyToEquation(randomPolynomial(order, quiz), polySymbol) + ')'
 		];
-		quiz.askQuestion(quiz, 'Factor: ' + polyToEquation(polyProd, polySymbol), answer, choices);
+		quiz.askQuestion({
+			question:'Factor: ' + polyToEquation(polyProd, polySymbol),
+			answer: answer,
+			choices: choices
+		});
 	}
 
 	function any(quiz) {

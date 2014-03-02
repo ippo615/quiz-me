@@ -17,7 +17,11 @@ var linux = (function () {
 
 	function whichCommand(doesThis, answer) {
 		return function (quiz) {
-			quiz.askQuestion(quiz, 'Which command ' + doesThis + '?', answer, allCommands);
+			quiz.askQuestion({
+				question:'Which command ' + doesThis + '?',
+				answer:answer,
+				choices:allCommands
+			});
 		};
 	}
 

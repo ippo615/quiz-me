@@ -37,37 +37,61 @@ var grammar = (function () {
 	function actorPresent(quiz) {
 		var choices = makeChoicesPresent(quiz);
 		var question = 'In the following sentence what is a noun? "' + makeSentence(choices) + '"';
-		quiz.askQuestion(quiz, question, choices.actor, [choices.actorAdj, choices.verb, choices.placeAdj, choices.adverb]);
+		quiz.askQuestion({
+			question: question,
+			answer: choices.actor,
+			choices: [choices.actorAdj, choices.verb, choices.placeAdj, choices.adverb]
+		});
 	}
 
 	function placePresent(quiz) {
 		var choices = makeChoicesPresent(quiz);
 		var question = 'In the following sentence what is a noun? "' + makeSentence(choices) + '"';
-		quiz.askQuestion(quiz, question, choices.place, [choices.actorAdj, choices.verb, choices.placeAdj, choices.adverb]);
+		quiz.askQuestion({
+			question: question,
+			answer: choices.place,
+			choices: [choices.actorAdj, choices.verb, choices.placeAdj, choices.adverb]
+		});
 	}
 
 	function verbPresent(quiz) {
 		var choices = makeChoicesPresent(quiz);
 		var question = 'In the following sentence what is a verb? "' + makeSentence(choices) + '"';
-		quiz.askQuestion(quiz, question, choices.verb, [choices.actor, choices.actorAdj, choices.place, choices.placeAdj, choices.adverb]);
+		quiz.askQuestion({
+			question: question,
+			answer: choices.verb,
+			choices: [choices.actor, choices.actorAdj, choices.place, choices.placeAdj, choices.adverb]
+		});
 	}
 
 	function adverbPresent(quiz) {
 		var choices = makeChoicesPresent(quiz);
 		var question = 'In the following sentence what is an adverb? "' + makeSentence(choices) + '"';
-		quiz.askQuestion(quiz, question, choices.adverb, [choices.actor, choices.actorAdj, choices.place, choices.placeAdj, choices.verb]);
+		quiz.askQuestion({
+			question: question,
+			answer: choices.adverb,
+			choices: [choices.actor, choices.actorAdj, choices.place, choices.placeAdj, choices.verb]
+		});
 	}
 
 	function actorAdjPresent(quiz) {
 		var choices = makeChoicesPresent(quiz);
 		var question = 'In the following sentence what is an adjective? "' + makeSentence(choices) + '"';
-		quiz.askQuestion(quiz, question, choices.actorAdj, [choices.actor, choices.place, choices.adverb, choices.verb]);
+		quiz.askQuestion({
+			question: question,
+			answer: choices.actorAdj,
+			choices: [choices.actor, choices.place, choices.adverb, choices.verb]
+		});
 	}
 
 	function placeAdjPresent(quiz) {
 		var choices = makeChoicesPresent(quiz);
 		var question = 'In the following sentence what is an adjective? "' + makeSentence(choices) + '"';
-		quiz.askQuestion(quiz, question, choices.placeAdj, [choices.actor, choices.place, choices.adverb, choices.verb]);
+		quiz.askQuestion({
+			question: question,
+			answer: choices.placeAdj,
+			choices: [choices.actor, choices.place, choices.adverb, choices.verb]
+		});
 	}
 
 	function any(quiz) {
