@@ -732,6 +732,12 @@ var Quiz = (function(){
 				html += createInputSelect(opt.name, opt.name, opt.config);
 			}
 		}
+		if( l === 0 ){
+			html = '<p style="text-align:center;">This quiz has no options.</p>';
+		}
+		if( html === '' ){
+			html = '<p style="text-align:center;">The options are misconfigured in the source code. They should be an array of objects.</p>';
+		}
 		return html;
 	}
 

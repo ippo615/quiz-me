@@ -279,6 +279,6 @@ var polynomial = (function () {
 			mul: mulQuestion,
 			factor: factorQuestion
 		},
-		options: {}
+		options: []
 	};
 })();

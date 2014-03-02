@@ -77,7 +77,7 @@ var us_president = (function () {
 		questions: {
 			any: nthPresident
 		},
-		options: {}
+		options: []
 	};
 
 })();

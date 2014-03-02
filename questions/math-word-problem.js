@@ -185,7 +185,7 @@ var math_word_problem = (function () {
 			sub: sub,
 			same: same
 		},
-		options: {}
+		options: []
 	};
 
 })();

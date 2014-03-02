@@ -249,7 +249,7 @@ var periodic_table = (function () {
 			trends: trends,
 			any: any
 		},
-		options: {}
+		options: []
 	};
 
 })();

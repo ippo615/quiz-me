@@ -508,7 +508,7 @@ var perimeter = (function () {
 		questions: {
 			any: perimeterQuestion
 		},
-		options: {}
+		options: []
 	};
 
 })();

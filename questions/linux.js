@@ -354,7 +354,7 @@ var linux = (function () {
 			any: any,
 			whichCommand: whichCommands
 		},
-		options: {}
+		options: []
 	};
 
 })();

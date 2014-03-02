@@ -110,7 +110,7 @@ var grammar = (function () {
 		questions: {
 			any: any
 		},
-		options: {}
+		options: []
 	};
 
 })();

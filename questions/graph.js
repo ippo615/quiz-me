@@ -290,6 +290,6 @@ var graph = (function () {
 			quadratic: quadratic,
 			power: power
 		},
-		options: {}
+		options: []
 	};
 })();

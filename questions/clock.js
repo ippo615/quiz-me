@@ -206,6 +206,6 @@ var clock = (function () {
 		questions: {
 			any: clockQuestion
 		},
-		options: {}
+		options: []
 	};
 })();
