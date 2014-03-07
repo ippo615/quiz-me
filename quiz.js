@@ -568,7 +568,9 @@ var Quiz = (function(){
 		var textLength = this.questionContainer.innerHTML.length;
 		if( textSizeNode ){
 			textLength = textSizeNode.innerHTML.length+10;
-			document.getElementById('question-special').style.fontSize = globalScale*baseFontSize +'px';
+			if( document.getElementById('question-special') ){
+				document.getElementById('question-special').style.fontSize = globalScale*baseFontSize +'px';
+			}
 		}
 		var questionPart = 0.65;
 		var answerPart = 0.35;

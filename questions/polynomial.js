@@ -262,14 +262,40 @@ var polynomial = (function () {
 	}
 
 	function any(quiz) {
-		var question = quiz.choose([
-			addQuestion,
-			subQuestion,
-			mulQuestion,
-			factorQuestion
-		], 1)[0];
+
+		var availableQuestions = [];
+		var whichQuestion = quiz.getOption('polynomialQuestion', 'any');
+
+		if (whichQuestion === 'add' || whichQuestion === 'any') {
+			availableQuestions.push(addQuestion);
+		}
+		if (whichQuestion === 'sub' || whichQuestion === 'any') {
+			availableQuestions.push(subQuestion);
+		}
+		if (whichQuestion === 'mul' || whichQuestion === 'any') {
+			availableQuestions.push(mulQuestion);
+		}
+		if (whichQuestion === 'factor' || whichQuestion === 'any') {
+			availableQuestions.push(factorQuestion);
+		}
+
+		var question = quiz.choose(availableQuestions, 1)[0];
 		question(quiz);
+
 	}
+
+	var options = [];
+	options.push({
+		name: 'polynomialQuestion',
+		type: 'select',
+		config: {
+			'Any Question': 'any',
+			'Addition': 'add',
+			'Subtraction': 'sub',
+			'Multiplication': 'mul',
+			'Factoring': 'factor'
+		}
+	});
 
 	return {
 		questions: {
@@ -279,6 +305,6 @@ var polynomial = (function () {
 			mul: mulQuestion,
 			factor: factorQuestion
 		},
-		options: []
+		options: options
 	};
 })();
