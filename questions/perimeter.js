@@ -54,7 +54,7 @@ var perimeter = (function () {
 		context.lineCap = 'round';
 
 		// Draw the fill
-		context.fillStyle = '#0DF';
+		context.fillStyle = quiz.getOption('perimeterFillColor','#0DF');
 		context.beginPath();
 		context.moveTo(points[0].x, points[0].y);
 		var i, nPoints = points.length;
@@ -399,15 +399,23 @@ var perimeter = (function () {
 	}
 
 	function getRandomShape(quiz) {
-		var shapes = [
-			square,
-			rectangle,
-			trapazoid,
-			parallelogram,
-			triangleDown,
-			triangleUp,
-			regularPolygon
-		];
+		var shapes = [];
+		var whichQuestion = quiz.getOption('perimeterShape', 'any');
+
+		if (whichQuestion === 'quad' || whichQuestion === 'any') {
+			shapes.push(square);
+			shapes.push(rectangle);
+			shapes.push(trapazoid);
+			shapes.push(parallelogram);
+		}
+		if (whichQuestion === 'tri' || whichQuestion === 'any') {
+			shapes.push(triangleDown);
+			shapes.push(triangleUp);
+		}
+		if (whichQuestion === 'poly' || whichQuestion === 'any') {
+			shapes.push(regularPolygon);
+		}
+
 		var sides = quiz.getOption('sides', 20);
 		var xCenter = quiz.getOption('x', 120);
 		var yCenter = quiz.getOption('y', 100);
@@ -504,11 +512,42 @@ var perimeter = (function () {
 		animateToNewPoly(poly, 2000, null);
 	}
 
+	var options = [];
+	options.push({
+		name: 'perimeterShape',
+		type: 'select',
+		config: {
+			'Any Shape': 'any',
+			'Quadrilateral': 'quad',
+			'Regular Polygon': 'poly',
+			'Triangle': 'tri'
+		}
+	});
+	options.push({
+		'name': 'perimeterFillColor',
+		'type': 'select',
+		'config': {
+			'default': '#0DF',
+			'white': '#FFF',
+			'red': '#F00',
+			'orange': '#F80',
+			'yellow': '#FF0',
+			'lime': '#0F0',
+			'green': '#080',
+			'aqua': '#0FF',
+			'blue': '#00F',
+			'purple': '#F0F',
+			'brown': '#a52a2a',
+			'gray': '#888',
+			'black': '#000'
+		}
+	});
+
 	return {
 		questions: {
 			any: perimeterQuestion
 		},
-		options: []
+		options: options
 	};
 
 })();

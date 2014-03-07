@@ -86,36 +86,34 @@ var math_word_problem = (function () {
 		};
 	}
 
-	function makeQuestionGroup(answerFunc, textTemplate) {
+	function makeQuestionGroup(groupWord, textTemplate) {
 		return function (quiz) {
-			var names = quiz.choose(quiz.getOption('wordProblemNameList', allNames), 2);
+			var name = quiz.choose(quiz.getOption('wordProblemNameList', allNames), 1)[0];
 			var object = quiz.choose(commonObjects, 1)[0];
 
-			var opMin = parseInt(quiz.getOption('wordProblemMin', '0'), 10);
-			var opMax = parseInt(quiz.getOption('wordProblemMax', '50'), 10);
+			var opMin = parseInt(quiz.getOption('wordProblemMin', '1'), 10);
+			var opMax = parseInt(quiz.getOption('wordProblemMax', '12'), 10);
 			var opRange = opMax - opMin;
 
 			var n1 = opMin + Math.round(opRange * Math.random());
 			var n2 = opMin + Math.round(opRange * Math.random());
-			var nGiven = Math.round(n1 * Math.random());
+			var total = n1*n2;
 
 			var prob = {
-				name1: names[0],
-				name2: names[1],
-				stuff1: numberAndUnit(n1, object),
-				stuff2: numberAndUnit(n2, object),
-				give1: numberAndUnit(nGiven, object),
+				name: name,
+				stuff: numberAndUnit(total, object),
+				groups: numberAndUnit(n2, groupWord),
 				things: object + 's'
 			};
 
 			// Generate all answers from min to max
 			var i, possibleAnswers = [];
-			for (i = 0; i < opMax; i += 1) {
+			for (i = opMin; i < opMax; i += 1) {
 				possibleAnswers.push(numberAndUnit(i, object));
 			}
 
 			// Get correct one and 3 more answers then shuffle all for randomness
-			var answer = answerFunc(n1, n2, nGiven);
+			var answer = n1;
 			if (answer < possibleAnswers.length) {
 				possibleAnswers.splice(answer, 1);
 			}
@@ -135,6 +133,9 @@ var math_word_problem = (function () {
 			quiz.onResize = quiz.doNothing;
 		};
 	}
+
+	var groupDivide1 = makeQuestionGroup('group','{{name}} has {{stuff}} and wants to divide it into {{groups}}. How many {{things}} should be in each group?');
+	var groupDivide2 = makeQuestionGroup('friend','{{name}} has {{stuff}} and wants to give them to {{groups}}. How many {{things}} will each friend recieve?');
 
 	var add = makeQuestionTransfer(
 		function (n1, n2, nGiven) {
@@ -167,13 +168,20 @@ var math_word_problem = (function () {
 		], 1)[0];
 		question(quiz);
 	};
-
+	var divide = function(quiz){
+		var question = quiz.choose([
+			groupDivide1,
+			groupDivide2
+		], 1)[0];
+		question(quiz);
+	};
 
 	function any(quiz) {
 		var question = quiz.choose([
 			add,
 			sub,
-			same
+			same,
+			divide
 		], 1)[0];
 		question(quiz);
 	}

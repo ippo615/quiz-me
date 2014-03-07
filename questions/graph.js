@@ -273,14 +273,40 @@ var graph = (function () {
 	}
 
 	function any(quiz) {
-		var question = quiz.choose([
-			constant,
-			linear,
-			quadratic,
-			power
-		], 1)[0];
+
+		var availableQuestions = [];
+		var whichQuestion = quiz.getOption('graphQuestion', 'any');
+
+		if (whichQuestion === 'simple' || whichQuestion === 'any') {
+			availableQuestions.push(power);
+		}
+		if (whichQuestion === 'constant' || whichQuestion === 'any') {
+			availableQuestions.push(constant);
+		}
+		if (whichQuestion === 'linear' || whichQuestion === 'any') {
+			availableQuestions.push(linear);
+		}
+		if (whichQuestion === 'quadratic' || whichQuestion === 'any') {
+			availableQuestions.push(quadratic);
+		}
+
+		var question = quiz.choose(availableQuestions, 1)[0];
 		question(quiz);
+
 	}
+
+	var options = [];
+	options.push({
+		name: 'graphQuestion',
+		type: 'select',
+		config: {
+			'Any Question': 'any',
+			'Simple': 'simple',
+			'Constant': 'constant',
+			'Linear': 'linear',
+			'Quadratic': 'quadratic'
+		}
+	});
 
 	return {
 		questions: {
@@ -290,6 +316,6 @@ var graph = (function () {
 			quadratic: quadratic,
 			power: power
 		},
-		options: []
+		options: options
 	};
 })();

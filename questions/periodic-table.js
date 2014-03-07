@@ -41,6 +41,206 @@ var periodic_table = (function () {
 		text: tsvPeriodicTable
 	});
 
+	var periodicTableHtml = '<style type="text/css">\n'
+	+'	.periodic-table {border: 0px; border-collapse: collapse; font-size: 0.5em; position:absolute; bottom:10em;left:4em;}\n'
+	+'	.periodic-table tr { padding: 0px; border: 0px; margin: 0;}\n'
+	+'	.periodic-table td { padding: 0px; border: 0px; margin: 0;}\n'
+	+'\n'
+	+'	.periodic-table tr td {width: 1.5em; font-size:1.5em; }\n'
+	+'	.element {text-align: center; width: 2em; height: 2em; line-height: 2em; opacity: 0.3;}\n'
+	+'\n'
+	+'	.active { opacity: 1.0; }\n'
+	+'	.metal	{color: #880; border:1px solid #880; background: #FF0; background: rgba(255,255,0,0.6);}\n'
+	+'	.metalloid	{color: #840; border:1px solid #840; background: #F80; background: rgba(255,128,0,0.6);}\n'
+	+'	.non-metal	{color: #080; border:1px solid #080; background: #0F0; background: rgba(0,255,0,0.6);}\n'
+	+'	.nobel-gas	{color: #088; border:1px solid #088; background: #0FF; background: rgba(0,255,255,0.6);}\n'
+	+'	.alkali	{color: #800; border:1px solid #800; background: #F00; background: rgba(255,0,0,0.6);}\n'
+	+'	.alkaline	{color: #008; border:1px solid #008; background: #00F; background: rgba(0,0,255,0.6);}\n'
+	+'	.halogen	{color: #808; border:1px solid #808; background: #F0F; background: rgba(255,0,255,0.6);}\n'
+	+'	.rare-earth {color: #000; border:1px solid #000; background: #AAA; background: rgba(128,128,128,0.6);}\n'
+	+'</style>\n'
+	+'<table align="center" border="0" cellpadding="0" cellspacing="0" class="periodic-table"><tr>\n'
+	+'<td><div class="element non-metal" id="element-h">H</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element nobel-gas" id="element-he">He</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td><div class="element alkali" id="element-li">Li</div></td>\n'
+	+'<td><div class="element alkaline" id="element-be">Be</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element metalloid" id="element-b">B</div></td>\n'
+	+'<td><div class="element non-metal" id="element-c">C</div></td>\n'
+	+'<td><div class="element non-metal" id="element-n">N</div></td>\n'
+	+'<td><div class="element non-metal" id="element-o">O</div></td>\n'
+	+'<td><div class="element halogen" id="element-f">F</div></td>\n'
+	+'<td><div class="element nobel-gas" id="element-ne">Ne</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td><div class="element alkali" id="element-na">Na</div></td>\n'
+	+'<td><div class="element alkaline" id="element-mg">Mg</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element metal" id="element-al">Al</div></td>\n'
+	+'<td><div class="element metalloid" id="element-si">Si</div></td>\n'
+	+'<td><div class="element non-metal" id="element-p">P</div></td>\n'
+	+'<td><div class="element non-metal" id="element-s">S</div></td>\n'
+	+'<td><div class="element halogen" id="element-cl">Cl</div></td>\n'
+	+'<td><div class="element nobel-gas" id="element-ar">Ar</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td><div class="element alkali" id="element-k">K</div></td>\n'
+	+'<td><div class="element alkaline" id="element-ca">Ca</div></td>\n'
+	+'<td><div class="element metal" id="element-sc">Sc</div></td>\n'
+	+'<td><div class="element metal" id="element-ti">Ti</div></td>\n'
+	+'<td><div class="element metal" id="element-v">V</div></td>\n'
+	+'<td><div class="element metal" id="element-cr">Cr</div></td>\n'
+	+'<td><div class="element metal" id="element-mn">Mn</div></td>\n'
+	+'<td><div class="element metal" id="element-fe">Fe</div></td>\n'
+	+'<td><div class="element metal" id="element-co">Co</div></td>\n'
+	+'<td><div class="element metal" id="element-ni">Ni</div></td>\n'
+	+'<td><div class="element metal" id="element-cu">Cu</div></td>\n'
+	+'<td><div class="element metal" id="element-zn">Zn</div></td>\n'
+	+'<td><div class="element metal" id="element-ga">Ga</div></td>\n'
+	+'<td><div class="element metalloid" id="element-ge">Ge</div></td>\n'
+	+'<td><div class="element metalloid" id="element-as">As</div></td>\n'
+	+'<td><div class="element non-metal" id="element-se">Se</div></td>\n'
+	+'<td><div class="element halogen" id="element-br">Br</div></td>\n'
+	+'<td><div class="element nobel-gas" id="element-kr">Kr</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td><div class="element alkali" id="element-rb">Rb</div></td>\n'
+	+'<td><div class="element alkaline" id="element-sr">Sr</div></td>\n'
+	+'<td><div class="element metal" id="element-y">Y</div></td>\n'
+	+'<td><div class="element metal" id="element-zr">Zr</div></td>\n'
+	+'<td><div class="element metal" id="element-nb">Nb</div></td>\n'
+	+'<td><div class="element metal" id="element-mo">Mo</div></td>\n'
+	+'<td><div class="element metal" id="element-tc">Tc</div></td>\n'
+	+'<td><div class="element metal" id="element-ru">Ru</div></td>\n'
+	+'<td><div class="element metal" id="element-rh">Rh</div></td>\n'
+	+'<td><div class="element metal" id="element-pd">Pd</div></td>\n'
+	+'<td><div class="element metal" id="element-ag">Ag</div></td>\n'
+	+'<td><div class="element metal" id="element-cd">Cd</div></td>\n'
+	+'<td><div class="element metal" id="element-in">In</div></td>\n'
+	+'<td><div class="element metal" id="element-sn">Sn</div></td>\n'
+	+'<td><div class="element metalloid" id="element-sb">Sb</div></td>\n'
+	+'<td><div class="element metalloid" id="element-te">Te</div></td>\n'
+	+'<td><div class="element halogen" id="element-i">I</div></td>\n'
+	+'<td><div class="element nobel-gas" id="element-xe">Xe</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td><div class="element alkali" id="element-cs">Cs</div></td>\n'
+	+'<td><div class="element alkaline" id="element-ba">Ba</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element metal" id="element-hf">Hf</div></td>\n'
+	+'<td><div class="element metal" id="element-ta">Ta</div></td>\n'
+	+'<td><div class="element metal" id="element-w">W</div></td>\n'
+	+'<td><div class="element metal" id="element-re">Re</div></td>\n'
+	+'<td><div class="element metal" id="element-os">Os</div></td>\n'
+	+'<td><div class="element metal" id="element-ir">Ir</div></td>\n'
+	+'<td><div class="element metal" id="element-pt">Pt</div></td>\n'
+	+'<td><div class="element metal" id="element-au">Au</div></td>\n'
+	+'<td><div class="element metal" id="element-hg">Hg</div></td>\n' 
+	+'<td><div class="element metal" id="element-tl">Tl</div></td>\n'
+	+'<td><div class="element metal" id="element-pb">Pb</div></td>\n'
+	+'<td><div class="element metal" id="element-bi">Bi</div></td>\n'
+	+'<td><div class="element metalloid" id="element-po">Po</div></td>\n'
+	+'<td><div class="element halogen" id="element-at">At</div></td>\n'
+	+'<td><div class="element nobel-gas" id="element-rn">Rn</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td><div class="element alkali" id="element-fr">Fr</div></td>\n'
+	+'<td><div class="element alkaline" id="element-ra">Ra</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element metal" id="element-rf">Rf</div></td>\n'
+	+'<td><div class="element metal" id="element-db">Db</div></td>\n'
+	+'<td><div class="element metal" id="element-sg">Sg</div></td>\n'
+	+'<td><div class="element metal" id="element-bh">Bh</div></td>\n'
+	+'<td><div class="element metal" id="element-hs">Hs</div></td>\n'
+	+'<td><div class="element metal" id="element-mt">Mt</div></td>\n'
+	+'<td><div class="element metal" id="element-ds">Ds</div></td>\n'
+	+'<td><div class="element metal" id="element-rg">Rg</div></td>\n'
+	+'<td><div class="element metal" id="element-cn">Cn</div></td>\n'
+	+'<td><div class="element metal" id="element-uut">Uut</div></td>\n'
+	+'<td><div class="element metal" id="element-fl">Fl</div></td>\n'
+	+'<td><div class="element metal" id="element-uup">Uup</div></td>\n'
+	+'<td><div class="element metal" id="element-lv">Lv</div></td>\n'
+	+'<td><div class="element metal" id="element-uus">Uus</div></td>\n'
+	+'<td><div class="element metal" id="element-uuo">Uuo</div></td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element rare-earth" id="element-la">La</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-ce">Ce</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-pr">Pr</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-nd">Nd</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-pm">Pm</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-sm">Sm</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-eu">Eu</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-gd">Gd</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-tb">Tb</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-dy">Dy</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-ho">Ho</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-er">Er</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-tm">Tm</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-yb">Yb</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-lu">Lu</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'</tr>\n'
+	+'<tr>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'<td><div class="element rare-earth" id="element-ac">Ac</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-th">Th</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-pa">Pa</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-u">U</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-np">Np</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-pu">Pu</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-am">Am</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-cm">Cm</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-bk">Bk</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-cf">Cf</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-es">Es</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-fm">Fm</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-md">Md</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-no">No</div></td>\n'
+	+'<td><div class="element rare-earth" id="element-lr">Lr</div></td>\n'
+	+'<td>&nbsp;</td>\n'
+	+'</tr>\n'
+	+'</table>';
+
 	function filter(things, checkIsOk) {
 		var filtered = [];
 		var i, l = things.length;
@@ -95,6 +295,17 @@ var periodic_table = (function () {
 		};
 	}
 
+	function highlightChoices(choices){
+		var i,l=choices.length;
+		for( i=0; i<l; i+=1 ){
+			try {
+				document.getElementById('element-'+choices[i].symbol.toLowerCase()).style.opacity = 1.0;
+			}catch(e){
+				console.info(choices[i]);
+			}
+		}
+	}
+
 	var makeNumericPropertyQuestion = function (property, sortBy, question) {
 		return function (quiz) {
 			var minAtomicIndex = parseInt(quiz.getOption('minAtomicIndex', '1'), 10) - 1;
@@ -125,7 +336,8 @@ var periodic_table = (function () {
 			quiz.choiceSet(3, answers[2], answer === answers[2]);
 			quiz.choiceSet(4, answers[3], answer === answers[3]);
 
-			quiz.questionLongText(question);
+			quiz.questionTextAndStuff(question,periodicTableHtml);
+			highlightChoices(choices);
 		};
 	};
 
@@ -156,7 +368,9 @@ var periodic_table = (function () {
 			quiz.choiceSet(3, answers[2], answer[property] === choices[2][property]);
 			quiz.choiceSet(4, answers[3], answer[property] === choices[3][property]);
 
-			quiz.questionLongText(question.replace(/{{property}}/, answer[property]));
+			//quiz.questionLongText(question.replace(/{{property}}/, answer[property]));
+			quiz.questionTextAndStuff(question.replace(/{{property}}/, answer[property]),periodicTableHtml);
+			highlightChoices(choices);
 		};
 	}
 
@@ -196,7 +410,51 @@ var periodic_table = (function () {
 
 	var simple = combineQuestions([etimology, group, period, atomicNumber, symbol,character]);
 	var trends = combineQuestions([lessMass, moreMass, lessRadius, moreRadius, lessAtomicNumber, moreAtomicNumber, lessElectroNegativity, moreElectroNegativity, lessIonizationEnergy, moreIonizationEnergy, lessDensity, moreDensity, lessMeltingPoint, moreMeltingPoint, lessBoilingPoint, moreBoilingPoint, lessSpecificHeat, moreSpecificHeat, lessAbudance, moreAbudance]);
-	var any = combineQuestions([simple, trends]);
+	var any = function(quiz){
+		var availableQuestions = [];
+		var whichQuestion = quiz.getOption('periodicTableQuestion', 'any');
+
+		if (whichQuestion === 'simple' || whichQuestion === 'any') {
+			availableQuestions.push(simple);
+		}
+		if (whichQuestion === 'trends' || whichQuestion === 'any') {
+			availableQuestions.push(trends);
+		}
+
+		var question = quiz.choose(availableQuestions, 1)[0];
+		question(quiz);
+	};
+
+	var options = [];
+	options.push({
+		name: 'periodicTableQuestion',
+		type: 'select',
+		config: {
+			'Any Question': 'any',
+			'Simple': 'simple',
+			'Trends': 'trends'
+		}
+	});
+	options.push({
+		name: 'minAtomicIndex',
+		type: 'slider',
+		config: {
+			min: 1,
+			max: 118,
+			steps: 1,
+			value: 1
+		}
+	});
+	options.push({
+		name: 'maxAtomicIndex',
+		type: 'slider',
+		config: {
+			min: 1,
+			max: 118,
+			steps: 1,
+			value: 118
+		}
+	});
 
 	return {
 		questions: {
@@ -249,7 +507,7 @@ var periodic_table = (function () {
 			trends: trends,
 			any: any
 		},
-		options: []
+		options: options
 	};
 
 })();

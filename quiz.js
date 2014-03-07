@@ -327,19 +327,25 @@ var Quiz = (function(){
 	Quiz.prototype.questionText = function(text){
 		this.questionType = 'text';
 		this.questionPrompt('');
-		this.questionContainer.innerHTML = '<div style="padding: 0 1em;">'+text+'</div>';
+		this.questionContainer.innerHTML = '<div id="question-text-length" style="padding: 0 1em;">'+text+'</div>';
 		//this.questionContainer.style.fontSize = '4em';
 		this.resize();
 	};
 	Quiz.prototype.questionLongText = function(text){
 		this.questionType = 'text';
 		this.questionPrompt('');
-		this.questionContainer.innerHTML = '<div style="padding: 0 1em;">'+text+'</div>';
+		this.questionContainer.innerHTML = '<div id="question-text-length" style="padding: 0 1em;">'+text+'</div>';
 		this.resize();
 		// make sure we have enough room for all the text
 		//var w = parseFloat( this.questionContainer.style.width );
 		// 900px width, 150 characters, 2em
 		//this.questionContainer.style.fontSize = (2 * (0.4*(80/text.length)+0.6*(w/900)))+'em';
+	};
+	Quiz.prototype.questionTextAndStuff = function(text,stuff){
+		this.questionType = 'text';
+		this.questionPrompt('');
+		this.questionContainer.innerHTML = '<div id="question-text-length" style="padding: 0 1em;">'+text+'</div><div id="question-special">'+stuff+'</div>';
+		this.resize();
 	};
 	Quiz.prototype.questionNumbers = function(top,bottom){
 		this.questionType = 'number';
@@ -558,12 +564,18 @@ var Quiz = (function(){
 
 		sizeNode(this.globalContainer,globalWidth,globalHeight);
 
+		var textSizeNode = document.getElementById('question-text-length');
+		var textLength = this.questionContainer.innerHTML.length;
+		if( textSizeNode ){
+			textLength = textSizeNode.innerHTML.length+10;
+			document.getElementById('question-special').style.fontSize = globalScale*baseFontSize +'px';
+		}
 		var questionPart = 0.65;
 		var answerPart = 0.35;
 		var fontSize;
 
 		if( globalWidth > globalHeight ){
-			fontSize = computeFontSize(globalWidth*0.5,globalHeight,this.questionContainer.innerHTML.length);
+			fontSize = computeFontSize(globalWidth*0.5,globalHeight,textLength);
 			sizeNode(this.questionContainer,globalWidth*questionPart,globalHeight);		
 			sizeNode(this.buttonContainer,globalWidth*answerPart,globalHeight);
 			this.buttonContainer.style.top = '0px';
@@ -571,7 +583,7 @@ var Quiz = (function(){
 			delClass(this.answerContainer, 'shrink');
 			delClass(this.overlayOptionContainer, 'shrink');
 		}else{
-			fontSize = computeFontSize(globalWidth,globalHeight*0.5,this.questionContainer.innerHTML.length);
+			fontSize = computeFontSize(globalWidth,globalHeight*0.5,textLength);
 			sizeNode(this.questionContainer,globalWidth,globalHeight*questionPart);		
 			sizeNode(this.buttonContainer,globalWidth,globalHeight*answerPart);
 			this.buttonContainer.style.top = (globalHeight*0.5)+'px';//(globalHeight*questionPart)+'px';
@@ -723,10 +735,10 @@ var Quiz = (function(){
 			if (opt.type === 'slider') {
 				html += createInputSlider(opt.name, opt.name, {
 					name: opt.name,
-					value: opt.value,
-					min: opt.min,
-					max: opt.max,
-					step: opt.step
+					value: opt.config.value,
+					min: opt.config.min,
+					max: opt.config.max,
+					step: opt.config.step
 				});
 			} else if (opt.type === 'select') {
 				html += createInputSelect(opt.name, opt.name, opt.config);

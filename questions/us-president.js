@@ -73,9 +73,62 @@ var us_president = (function () {
 		quiz.questionText('Who was the ' + president.ordinal + ' president of the United States?');
 	};
 
+	var servedBefore = function (quiz) {
+
+		var choices = chooseRandom(presidents, 4);
+		var correctIndex = Math.floor(Math.random() * 4);
+		var president = choices[correctIndex];
+
+		var answers = [
+			choices[0].name,
+			choices[1].name,
+			choices[2].name,
+			choices[3].name
+		];
+
+		quiz.onResize = quiz.doNothing;
+
+		quiz.choiceSet(1, answers[0], president.name === answers[0]);
+		quiz.choiceSet(2, answers[1], president.name === answers[1]);
+		quiz.choiceSet(3, answers[2], president.name === answers[2]);
+		quiz.choiceSet(4, answers[3], president.name === answers[3]);
+
+		quiz.questionText('Who served immediately before ' + presidents[parseInt(president.index,10)].name + '?');
+	};
+	var servedAfter = function (quiz) {
+
+		var choices = chooseRandom(presidents, 4);
+		var correctIndex = Math.floor(Math.random() * 4);
+		var president = choices[correctIndex];
+
+		var answers = [
+			choices[0].name,
+			choices[1].name,
+			choices[2].name,
+			choices[3].name
+		];
+
+		quiz.onResize = quiz.doNothing;
+
+		quiz.choiceSet(1, answers[0], president.name === answers[0]);
+		quiz.choiceSet(2, answers[1], president.name === answers[1]);
+		quiz.choiceSet(3, answers[2], president.name === answers[2]);
+		quiz.choiceSet(4, answers[3], president.name === answers[3]);
+
+		quiz.questionText('Who served immediately after ' + presidents[parseInt(president.index,10)-2].name + '?');
+	};
+
+	function combineQuestions(questions) {
+		return function (quiz) {
+			var question = chooseRandom(questions, 1)[0];
+			question(quiz);
+		};
+	}
+	var order = combineQuestions([servedAfter,servedBefore,nthPresident]);
+
 	return {
 		questions: {
-			any: nthPresident
+			any: order
 		},
 		options: []
 	};
