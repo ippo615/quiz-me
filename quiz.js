@@ -565,9 +565,12 @@ var Quiz = (function(){
 		sizeNode(this.globalContainer,globalWidth,globalHeight);
 
 		var textSizeNode = document.getElementById('question-text-length');
-		var textLength = this.questionContainer.innerHTML.length;
+		// console.info( textLength +' -- '+ this.questionContainer.innerHTML.length);
 		if( textSizeNode ){
-			textLength = textSizeNode.innerHTML.length+10;
+			var trimmedText = textSizeNode.innerHTML.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,'');
+			var textLength = trimmedText.length;
+			//textLength = textSizeNode.innerHTML.length+10;
+			textLength *= 3.0;
 			if( document.getElementById('question-special') ){
 				document.getElementById('question-special').style.fontSize = globalScale*baseFontSize +'px';
 			}

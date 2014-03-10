@@ -200,6 +200,7 @@ function make_page {
 	<!--[if IE]>
 		<script type=\"text/javascript\" src=\"../vendor/excanvas.js\"></script>
 	<![endif]-->
+	<script type=\"text/javascript\" src=\"../vendor/ascii-math.js\"></script>
 	<script type=\"text/javascript\" src=\"../quiz.js\"></script>
 	<script type=\"text/javascript\" src=\"../$jsSrcUrl\"></script>
   </head>

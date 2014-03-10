@@ -3,9 +3,9 @@
   <head>
   <meta charset="UTF-8">
 
-  <title>graph</title>
+  <title>calculus</title>
 
-  <meta name="description" content="graph quiz">
+  <meta name="description" content="calculus quiz">
   <meta name="author" content="Andrew Ippoliti">
 
   <meta name="HandheldFriendly" content="True">
@@ -20,7 +20,7 @@
 	<![endif]-->
 	<script type="text/javascript" src="../vendor/ascii-math.js"></script>
 	<script type="text/javascript" src="../quiz.js"></script>
-	<script type="text/javascript" src="../questions/graph.js"></script>
+	<script type="text/javascript" src="../questions/calculus.js"></script>
   </head>
   <body id="global-container" class="no-select">
 
@@ -28,12 +28,12 @@
 
 onload = function(){
 	var myQuiz = new Quiz({
-		makeQuestion: graph.questions.any,
+		makeQuestion: calculus.questions.any,
 		options: {}
 	});
 	myQuiz.createUi(document.getElementById('global-container'));
 	myQuiz.setupUi();
-	myQuiz.setupOptionsForm(graph.options);
+	myQuiz.setupOptionsForm(calculus.options);
 	window.onresize = function(){
 		myQuiz.resize()	;
 	};
